@@ -18,7 +18,6 @@ export const useDmsFetch = createFetch({
           ...options.headers,
           Authorization: `Bearer ${token}`,
         };
-
       return {
         options,
       };

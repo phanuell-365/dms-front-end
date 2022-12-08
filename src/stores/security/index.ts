@@ -3,6 +3,7 @@ import { ref, Ref } from "vue";
 import { AuthUser } from "./interfaces";
 import { useStorage } from "@vueuse/core";
 import { useDmsFetch } from "../../composables";
+import { DmsError } from "../../errors/dms-error";
 
 interface SecurityState {
   token: string;
@@ -26,23 +27,13 @@ export const useSecurityStore = defineStore("security", () => {
       .post(securityObj)
       .json();
 
-    // const response: Response = await fetch(
-    //   import.meta.env.VITE_VUE_APP_API_URL,
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(securityObj),
-    //   }
-    // );
-
-    // const data = await response.json();
-
-    // if (!response.ok) throw data as Error;
-
     if (error.value) {
-      throw error.value as Error;
+      console.error("There was an error -> ", error);
+      throw new DmsError(
+        error.value.message,
+        data.value.message,
+        data.value.statusCode
+      );
     }
 
     const { access_token, expires_in, userId, role } = data.value;
@@ -76,5 +67,5 @@ export const useSecurityStore = defineStore("security", () => {
     return data;
   }
 
-  return { auth, getStoredToken };
+  return { auth, getStoredToken, login };
 });
