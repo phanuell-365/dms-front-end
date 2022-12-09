@@ -1,13 +1,16 @@
 <template>
   <ApplicationLayout>
     <template #pages>
-      <h2>The Document Management System</h2>
+      <div>
+        <StatsContainer />
+      </div>
     </template>
   </ApplicationLayout>
 </template>
 
 <script lang="ts" setup>
 import ApplicationLayout from "../layouts/ApplicationLayout.vue";
+import StatsContainer from "../components/home/stats/StatsContainer.vue";
 </script>
 
 <style scoped></style>

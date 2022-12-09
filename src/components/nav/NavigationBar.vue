@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-row flex-nowrap justify-between items-center my-2 py-4 px-6 mx-3 bg-white"
+    class="flex flex-row flex-nowrap justify-between items-center md:my-2 py-4 px-6 md:mx-3 bg-white md:static sticky top-0"
   >
     <div>
       <!--  The page name  -->
