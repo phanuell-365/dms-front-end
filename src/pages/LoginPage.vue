@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="h-screen flex flex-col items-center justify-center mx-auto bg-zinc-50"
-  >
+  <PlainLayout>
     <div class="flex flex-col items-center justify-center pb-2 mt-1 mb-2">
       <DocumentIcon class="h-12 w-12 text-emerald-600 mb-3 mt-1" />
       <h2 class="text-3xl text-zinc-700 font-bold my-2">
@@ -103,7 +101,7 @@
         </div>
       </form>
     </div>
-  </div>
+  </PlainLayout>
 </template>
 
 <script lang="ts" setup>
@@ -113,6 +111,7 @@ import { ref, Ref } from "vue";
 import { useRouter } from "vue-router";
 import { AuthUser } from "../stores/security/interfaces";
 import { useSecurityStore } from "../stores/security";
+import PlainLayout from "../layouts/PlainLayout.vue";
 
 const router = useRouter();
 
