@@ -4,7 +4,7 @@
   >
     <div>
       <!--  The page name  -->
-      <h1 class="text-3xl font-bold">{{ startCase(routeName) }}</h1>
+      <h1 class="md:text-3xl text-2xl font-bold">{{ startCase(routeName) }}</h1>
     </div>
     <div>
       <NewDocumentButton />
