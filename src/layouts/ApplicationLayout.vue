@@ -1,19 +1,21 @@
 <template>
-  <div class="h-screen">
-    <div class="max-w-[82rem] mx-auto px-3 sm:px-4 md:px-3">
+  <div class="bg-zinc-50">
+    <nav class="lg:pl-[calc(100%-calc(100%-16rem))] bg-white">
+      <NavigationBar />
+    </nav>
+    <div class="container mx-auto px-2">
       <aside
-        class="hidden fixed lg:block z-20 bg-emerald-600 inset-0 pb-10 px-5 right-auto w-[15rem] left-[max(0px,calc(50%-45rem))]"
+        class="hidden fixed lg:block z-20 bg-emerald-600 inset-0 pb-10 px-5 right-auto w-[calc(100%-calc(100%-16rem))] left-[max(0px,calc(50%-45rem))]"
       >
         <SidebarLayout />
         <BottomAvatar />
       </aside>
 
-      <nav class="lg:pl-[13rem]">Dashboard</nav>
-      <main class="lg:pl-[15rem] bg-zinc-50">
-        <div>
+      <div class="lg:pl-[calc(100%-calc(100%-16rem))]">
+        <main class="mx-3 h-full">
           <slot name="pages" />
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   </div>
 </template>
@@ -21,6 +23,7 @@
 <script lang="ts" setup>
 import SidebarLayout from "./SidebarLayout.vue";
 import BottomAvatar from "../components/sidebar/BottomAvatar.vue";
+import NavigationBar from "../components/nav/NavigationBar.vue";
 </script>
 
 <style scoped></style>
