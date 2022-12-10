@@ -2,16 +2,12 @@
   <div
     class="group/table shadow-xl mx-3 py-2 px-3 bg-white basis-full md:w-auto w-1/2"
   >
-    <div class="m-1 p-2 text-sm uppercase font-bold tracking-widest">
-      {{ tableName }}
-    </div>
-    <div class="m-1 p-2">
-      <div class="overflow-x-auto relative">
-        <slot name="table" />
-      </div>
-
+    <div class="m-1 p-2 flex flex-row flex-nowrap items-center justify-between">
+      <span class="text-sm uppercase font-bold tracking-widest">
+        {{ tableName }}
+      </span>
       <div
-        class="flex invisible group-hover/table:visible justify-end text-3xs font-poppins-light px-4 mt-4"
+        class="flex invisible group-hover/table:visible justify-end text-3xs font-poppins-light px-4"
       >
         <RouterLink
           :to="`${href}`"
@@ -25,6 +21,11 @@
             class="w-5 h-5 transition group-hover/view-all:translate-x-1 mt-px"
           />
         </RouterLink>
+      </div>
+    </div>
+    <div class="m-1 p-2">
+      <div class="overflow-x-auto relative">
+        <slot name="table" />
       </div>
     </div>
   </div>

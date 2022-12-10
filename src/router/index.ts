@@ -20,6 +20,41 @@ const router = createRouter({
       name: "not-found",
       component: () => import("../pages/NotFoundPage.vue"),
     },
+    {
+      path: "/documents",
+      component: () => import("../pages/my-documents/DocumentsRenderPage.vue"),
+      children: [
+        {
+          path: "",
+          name: "documents",
+          component: () => import("../pages/my-documents/DocumentsPage.vue"),
+        },
+        {
+          path: "list",
+          name: "documents-list",
+          component: () =>
+            import("../pages/my-documents/DocumentsListPage.vue"),
+        },
+        {
+          path: "create",
+          name: "create-document",
+          component: () =>
+            import("../pages/my-documents/DocumentsCreatePage.vue"),
+        },
+        {
+          path: "edit/:id",
+          name: "edit-document",
+          component: () =>
+            import("../pages/my-documents/DocumentsEditPage.vue"),
+        },
+        {
+          path: "view/:id",
+          name: "view-document",
+          component: () =>
+            import("../pages/my-documents/DocumentsViewPage.vue"),
+        },
+      ],
+    },
   ],
 });
 

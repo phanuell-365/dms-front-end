@@ -11,7 +11,7 @@
       <StatBody title="documents">
         <template #icon>
           <DocumentDuplicateIcon
-            class="w-12 h-12 text-white group-hover/stat:bg-emerald-700 bg-emerald-600 rounded-lg p-2 transition duration-100 delay-75 ease-in-out"
+            class="w-12 h-12 text-emerald-100 group-hover/stat:bg-emerald-700 bg-emerald-600 rounded-lg p-2 transition duration-100 delay-75 ease-in-out"
           />
         </template>
       </StatBody>
@@ -22,7 +22,7 @@
       <StatBody title="sent">
         <template #icon>
           <PaperAirplaneIcon
-            class="w-12 h-12 text-white group-hover/stat:bg-emerald-700 bg-emerald-600 rounded-lg p-2 transition duration-100 delay-75 ease-in-out"
+            class="w-12 h-12 text-emerald-100 group-hover/stat:bg-emerald-700 bg-emerald-600 rounded-lg p-2 transition duration-100 delay-75 ease-in-out"
           />
         </template>
       </StatBody>
@@ -33,7 +33,7 @@
       <StatBody title="received">
         <template #icon>
           <InboxIcon
-            class="w-12 h-12 text-white group-hover/stat:bg-emerald-700 bg-emerald-600 rounded-lg p-2 transition duration-100 delay-75 ease-in-out"
+            class="w-12 h-12 text-emerald-100 group-hover/stat:bg-emerald-700 bg-emerald-600 rounded-lg p-2 transition duration-100 delay-75 ease-in-out"
           />
         </template>
       </StatBody>

@@ -6,7 +6,7 @@
       <div class="p-1 flex items-center justify-evenly">
         <slot name="icon">
           <UsersIcon
-            class="w-12 h-12 text-white group-hover/stat:bg-emerald-700 bg-emerald-600 rounded-lg p-2 transition duration-100 delay-75 ease-in-out"
+            class="w-12 h-12 text-emerald-100 group-hover/stat:bg-emerald-700 bg-emerald-600 rounded-lg p-2 transition duration-100 delay-75 ease-in-out"
           />
         </slot>
       </div>

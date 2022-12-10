@@ -1,16 +1,6 @@
 <template>
-  <!--  <RouterLink-->
-  <!--    :to="`/${to}`"-->
-  <!--    active-class="group hover:bg-emerald-800 bg-emerald-700 transition delay-100 duration-75 ease-in-out"-->
-  <!--    class="hover:bg-emerald-700 my-3 py-2 rounded flex items-center transition delay-100 duration-75 ease-in-out"-->
-  <!--  >-->
-  <!--    <div class="px-2">-->
-  <!--      <slot name="icon" />-->
-  <!--    </div>-->
-  <!--    <div class="px-2 text-emerald-50">{{ startCase(text) }}</div>-->
-  <!--  </RouterLink>-->
   <AppLink
-    :to="`/${to}`"
+    :to="`${to}`"
     active-class="group hover:bg-emerald-800 bg-emerald-700 my-3 py-2 rounded flex items-center transition delay-100 duration-75 ease-in-out"
     inactive-class="hover:bg-emerald-700 my-3 py-2 rounded flex items-center transition delay-100 duration-75 ease-in-out"
   >

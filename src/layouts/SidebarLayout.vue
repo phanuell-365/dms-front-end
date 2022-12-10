@@ -14,36 +14,44 @@
         </div>
       </RouterLink>
     </div>
+
     <div class="py-2">
-      <SidebarItem text="home" to="">
+      <SidebarItem text="home" to="/">
         <template #icon>
           <HomeIcon
             class="w-6 h-6 text-emerald-200 inline-block group-hover:text-emerald-400"
           />
         </template>
       </SidebarItem>
-      <SidebarItem text="documents" to="documents">
+      <SidebarItem text="users" to="/users">
+        <template #icon>
+          <UserGroupIcon
+            class="w-6 h-6 text-emerald-200 inline-block group-hover:text-emerald-400"
+          />
+        </template>
+      </SidebarItem>
+      <SidebarItem text="documents" to="/documents">
         <template #icon>
           <DocumentDuplicateIcon
             class="w-6 h-6 text-emerald-200 inline-block group-hover:text-emerald-400"
           />
         </template>
       </SidebarItem>
-      <SidebarItem text="sent" to="sent">
+      <SidebarItem text="sent" to="/sent">
         <template #icon>
           <PaperAirplaneIcon
             class="w-6 h-6 text-emerald-200 inline-block group-hover:text-emerald-400 transition transform -rotate-45"
           />
         </template>
       </SidebarItem>
-      <SidebarItem text="received" to="received">
+      <SidebarItem text="received" to="/received">
         <template #icon>
           <InboxIcon
             class="w-6 h-6 text-emerald-200 inline-block group-hover:text-emerald-400"
           />
         </template>
       </SidebarItem>
-      <SidebarItem text="version control" to="versions">
+      <SidebarItem text="version control" to="/versions">
         <template #icon>
           <AdjustmentsVerticalIcon
             class="w-6 h-6 text-emerald-200 inline-block group-hover:text-emerald-400"
@@ -62,6 +70,7 @@ import {
   HomeIcon,
   InboxIcon,
   PaperAirplaneIcon,
+  UserGroupIcon,
 } from "@heroicons/vue/24/outline";
 import SidebarItem from "../components/sidebar/SidebarItem.vue";
 </script>

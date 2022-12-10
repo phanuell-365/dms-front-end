@@ -12,7 +12,7 @@
       </aside>
 
       <div class="lg:pl-[calc(100%-calc(100%-16rem))]">
-        <main class="mx-3 h-full">
+        <main class="mx-3">
           <slot name="pages" />
         </main>
       </div>
