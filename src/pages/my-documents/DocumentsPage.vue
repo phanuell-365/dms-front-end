@@ -8,16 +8,27 @@
         :key="grid"
         class="md:basis-1/2 px-4 p-1 md:first:mt-auto first:mt-5 md:my-auto my-3 last:mb-5 md:last:mb-auto border bg-white rounded-tl-lg rounded-bl-lg rounded-tr-lg rounded-br-lg"
       >
-        <div class="flex flex-col m-1">
+        <div class="flex flex-row md:justify-between md:flex-wrap m-1">
+          <!--          <div class="flex justify-between">-->
+          <!--            <DocumentPlusIcon-->
+          <!--              class="w-12 h-12 m-2 bg-sky-50 text-sky-600 rounded-lg p-3 self-center"-->
+          <!--            />-->
+          <!--            <ArrowUpIcon-->
+          <!--              class="w-7 h-7 transform rotate-45 text-zinc-400 mt-2"-->
+          <!--            />-->
+          <!--          </div>-->
+
           <div class="flex justify-between">
             <DocumentPlusIcon
               class="w-12 h-12 m-2 bg-sky-50 text-sky-600 rounded-lg p-3 self-center"
             />
+          </div>
+          <div class="md:order-none order-last flex">
             <ArrowUpIcon
-              class="w-7 h-7 transform rotate-45 text-zinc-400 mt-2"
+              class="w-7 h-7 transform md:rotate-45 rotate-90 text-zinc-400 md:mt-2"
             />
           </div>
-          <div class="flex flex-col items-start justify-start">
+          <div class="flex flex-col md:order-last items-start justify-start">
             <div class="my-2 font-bold text-zinc-700 font-poppins-light">
               Create a document
             </div>
