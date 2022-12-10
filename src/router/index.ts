@@ -16,11 +16,6 @@ const router = createRouter({
       component: () => import("../pages/HomePage.vue"),
     },
     {
-      path: "/:notFound(.*)*",
-      name: "not-found",
-      component: () => import("../pages/NotFoundPage.vue"),
-    },
-    {
       path: "/documents",
       component: () => import("../pages/my-documents/DocumentsRenderPage.vue"),
       children: [
@@ -54,6 +49,11 @@ const router = createRouter({
             import("../pages/my-documents/DocumentsViewPage.vue"),
         },
       ],
+    },
+    {
+      path: "/:notFound(.*)*",
+      name: "not-found",
+      component: () => import("../pages/NotFoundPage.vue"),
     },
   ],
 });

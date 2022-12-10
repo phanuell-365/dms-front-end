@@ -108,10 +108,11 @@
 import { DocumentIcon } from "@heroicons/vue/24/outline";
 import { useField } from "vee-validate";
 import { ref, Ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { AuthUser } from "../stores/security/interfaces";
 import { useSecurityStore } from "../stores/security";
 import PlainLayout from "../layouts/PlainLayout.vue";
+import { useRouterStore } from "../stores/router";
 
 const router = useRouter();
 
@@ -183,6 +184,18 @@ const onLoginClick = async () => {
     }
   }
 };
+
+const routerStore = useRouterStore();
+
+const route = useRoute();
+
+routerStore.setCurrentRoute(route?.name, route.path);
+
+// onBeforeRouteUpdate((to, from, next) => {
+//   routerStore.setCurrentRoute(to.name, to.path);
+//
+//   next();
+// });
 </script>
 
 <style scoped></style>

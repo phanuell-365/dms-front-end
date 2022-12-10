@@ -24,10 +24,11 @@
 </template>
 
 <script lang="ts" setup>
-const emits = defineEmits(["click"]);
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const onClickHandler = async () => {
-  emits("click");
+  await router.push("/documents/create");
 };
 </script>
 

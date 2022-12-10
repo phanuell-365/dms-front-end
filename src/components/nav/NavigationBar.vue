@@ -14,13 +14,22 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router";
 import NewDocumentButton from "./NewDocumentButton.vue";
 import startCase from "lodash/startCase";
+import { ref } from "vue";
+import { useRouterStore } from "../../stores/router";
 
-const route = useRoute();
+const routerStore = useRouterStore();
 
-const routeName = route.name;
+const routeName = ref("");
+
+routeName.value = routerStore.getCurrentRouteName;
+
+routerStore.$subscribe((mutation, state) => {
+  routeName.value = state.currentRouteName;
+  console.error(routeName.value);
+  console.error(state.currentRouteName);
+});
 </script>
 
 <style scoped></style>

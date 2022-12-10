@@ -42,8 +42,19 @@
 <script lang="ts" setup>
 import { ArrowRightIcon, DocumentIcon } from "@heroicons/vue/24/outline";
 import { useRoute } from "vue-router";
+import { useRouterStore } from "../stores/router";
+
+const routerStore = useRouterStore();
 
 const route = useRoute();
+
+routerStore.setCurrentRoute(route?.name, route.path);
+
+// onBeforeRouteUpdate((to, from, next) => {
+//   routerStore.setCurrentRoute(to.name, to.path);
+//
+//   next();
+// });
 </script>
 
 <style scoped></style>

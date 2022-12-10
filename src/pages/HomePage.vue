@@ -28,6 +28,8 @@ import DashboardTable from "../components/home/tables/DashboardTable.vue";
 import { ref, Ref } from "vue";
 import moment from "moment";
 import { ReceivedDocumentsObject } from "../stores/app/received/interfaces";
+import { useRouterStore } from "../stores/router";
+import { useRoute } from "vue-router";
 
 const receivedDocumentsArray: Ref<ReceivedDocumentsObject[]> = ref([
   {
@@ -75,6 +77,22 @@ const receivedDocumentsArray: Ref<ReceivedDocumentsObject[]> = ref([
 const tableAttributes: Ref<string[]> = ref(
   Object.keys(receivedDocumentsArray.value[0])
 );
+
+const route = useRoute();
+
+const routerStore = useRouterStore();
+
+routerStore.setCurrentRoute(route?.name, route.path);
+
+console.error(route.name);
+
+console.error(routerStore.getCurrentRouteName);
+
+// onBeforeRouteUpdate((to, from, next) => {
+//   routerStore.setCurrentRoute(to?.name, to.path);
+//
+//   next();
+// });
 </script>
 
 <style scoped></style>
