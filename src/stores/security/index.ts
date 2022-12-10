@@ -23,17 +23,28 @@ export const useSecurityStore = defineStore("security", () => {
   });
 
   async function login(securityObj: AuthUser) {
-    const { data, error } = await useDmsFetch("/auth/users/login")
+    const { data, error } = await useDmsFetch("/auth/users/login", {
+      async afterFetch(ctx) {
+        console.error(ctx);
+        return ctx;
+      },
+    })
       .post(securityObj)
       .json();
 
     if (error.value) {
       console.error("There was an error -> ", error);
-      throw new DmsError(
-        error.value.message,
-        data.value.message,
-        data.value.statusCode
-      );
+      if (data.value)
+        throw new DmsError(
+          error.value.message,
+          data.value.message,
+          data.value.statusCode
+        );
+      else throw error.value as Error;
+    }
+
+    if (!data.value) {
+      throw new Error("Invalid username or password!");
     }
 
     const { access_token, expires_in, userId, role } = data.value;
@@ -44,10 +55,11 @@ export const useSecurityStore = defineStore("security", () => {
     auth.value.accessToken = access_token;
 
     await storeTokenToLocalStore(access_token);
+    if (data.value) {
+      const securityData = JSON.stringify(data.value);
 
-    const securityData = JSON.stringify(data.value);
-
-    useStorage("auth-data", securityData);
+      useStorage("auth-data", securityData);
+    }
   }
 
   async function storeTokenToLocalStore(accessToken: string) {

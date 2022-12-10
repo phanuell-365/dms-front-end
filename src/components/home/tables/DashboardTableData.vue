@@ -43,8 +43,6 @@ const newObject = ref(
   )
 );
 
-console.error(newObject.value);
-
 const values = ref(Object.values(newObject.value));
 const keys = ref(Object.keys(newObject.value));
 

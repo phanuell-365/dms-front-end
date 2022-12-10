@@ -19,11 +19,11 @@
             id="email"
             v-model="emailAddress"
             :class="{
-              'border-pink-600 dark:border-pink-500 focus:border-pink-600 dark:focus:border-pink-500 focus:ring-pink-600 dark:focus:ring-pink-500 caret-pink-600 text-pink-500':
+              'border-pink-600 dark:border-pink-500 focus:border-pink-600 focus:ring-pink-600 caret-pink-600 text-pink-500':
                 invalidCredentials ||
                 (!emailAddressMeta.valid && emailAddressMeta.validated) ||
                 (!emailAddressMeta.validated && !formIsValid),
-              'border-stone-300 focus:border-emerald-500 dark:focus:border-emerald-300 focus:ring-emerald-500 dark:focus:ring-emerald-200 dark:text-stone-50 caret-emerald-200':
+              'sm:border-stone-300 border-zinc-300 focus:border-emerald-500 focus:ring-emerald-500 caret-emerald-200':
                 !(
                   (!emailAddressMeta.valid && emailAddressMeta.validated) ||
                   (!emailAddressMeta.validated && !formIsValid)
@@ -35,17 +35,17 @@
           />
           <small
             v-if="!emailAddressMeta.valid && emailAddressMeta.validated"
-            class="mt-2 block text-pink-600 dark:text-pink-500 text-sm"
+            class="mt-2 block text-pink-600 text-sm"
             >{{ emailAddressErrorMessage }}</small
           >
           <span
             v-else-if="!emailAddressMeta.validated && !formIsValid"
-            class="mt-2 block text-pink-600 dark:text-pink-500 text-sm"
+            class="mt-2 block text-pink-600 text-sm"
             >Please enter an email</span
           >
           <small
             v-else-if="invalidCredentials"
-            class="mt-2 block text-pink-600 dark:text-pink-500 text-sm"
+            class="mt-2 block text-pink-600 text-sm"
             >{{ invalidCredentialsMessage }}</small
           >
         </label>
@@ -59,11 +59,11 @@
             id="password"
             v-model="password"
             :class="{
-              'border-pink-600 dark:border-pink-500 focus:border-pink-600 dark:focus:border-pink-500 focus:ring-pink-600 dark:focus:ring-pink-500 caret-pink-600 text-pink-500':
+              'border-pink-600 focus:border-pink-600 focus:ring-pink-600 caret-pink-600 text-pink-500':
                 invalidCredentials ||
                 (!passwordMeta.valid && passwordMeta.validated) ||
                 (!passwordMeta.validated && !formIsValid),
-              'border-stone-300 dark:border-stone-50 focus:border-emerald-500 dark:focus:border-emerald-300 focus:ring-emerald-500 dark:focus:ring-emerald-200 dark:text-stone-50 caret-emerald-200':
+              'sm:border-stone-300 border-zinc-300 focus:border-emerald-500 focus:ring-emerald-500 caret-emerald-200':
                 !(
                   (!passwordMeta.valid && passwordMeta.validated) ||
                   (!passwordMeta.validated && !formIsValid)
