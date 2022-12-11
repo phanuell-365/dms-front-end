@@ -6,11 +6,11 @@
       >
         Search by {{ searchBy }}
         <span
-          class="md:p-1 p-0.5 ml-2 -mr-1 rounded bg-opacity-10 bg-gray-500 flex items-center justify-center"
+          class="md:p-1 p-0.5 ml-2 -mr-1 rounded flex items-center justify-center"
         >
-          <ChevronRightIcon
+          <ChevronDownIcon
             :class="{
-              'rotate-90 transform transition delay-100 duration-75 ease-in-out':
+              '-rotate-180 transform transition delay-100 duration-75 ease-in-out':
                 open,
             }"
             aria-hidden="true"
@@ -41,7 +41,7 @@
 
 <script lang="ts" setup>
 import { Menu, MenuButton, MenuItems } from "@headlessui/vue";
-import { ChevronRightIcon } from "@heroicons/vue/24/outline";
+import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 
 interface SearchMenuContainerProps {
   searchBy: string;

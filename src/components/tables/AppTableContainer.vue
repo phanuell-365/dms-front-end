@@ -39,7 +39,7 @@
             v-model="query"
             :placeholder="searchInputPlaceholder"
             autocomplete="off"
-            class="block p-2 pl-10 md:w-80 w-full text-sm text-zinc-900 bg-white rounded-lg border border-zinc-300 focus:ring-sky-500 focus:border-sky-500"
+            class="block p-2 pl-10 md:w-80 w-full text-sm text-gray-500 bg-gray-50 rounded-lg border border-opacity-20 border-emerald-600 focus:outline-none focus:ring-1 focus:ring-opacity-40 focus:ring-emerald-600 focus:border-emerald-600"
             type="text"
           />
         </div>
@@ -77,7 +77,7 @@ const onSearchKeyClick = (searchKey: string) => {
 };
 
 const searchInputPlaceholder = computed(
-  () => `Search for items by ${selectedSearchKey.value}`
+  () => `Search for documents by ${selectedSearchKey.value}`
 );
 </script>
 

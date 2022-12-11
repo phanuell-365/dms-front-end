@@ -5,9 +5,9 @@
         class="inline-flex w-full items-center justify-center px-4 py-2 rounded bg-gray-300 bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
       >
         Actions
-        <ChevronRightIcon
+        <ChevronDownIcon
           :class="{
-            'rotate-90 transform transition delay-100 duration-75 ease-in-out':
+            '-rotate-180 transform transition delay-100 duration-75 ease-in-out':
               open,
           }"
           aria-hidden="true"
@@ -37,7 +37,7 @@
 
 <script lang="ts" setup>
 import { Menu, MenuButton, MenuItems } from "@headlessui/vue";
-import { ChevronRightIcon } from "@heroicons/vue/24/outline";
+import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 </script>
 
 <style scoped></style>
