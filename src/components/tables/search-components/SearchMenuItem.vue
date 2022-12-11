@@ -3,7 +3,7 @@
     <button
       :class="[
         active ? 'bg-emerald-600 text-white' : 'text-zinc-800',
-        'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+        'group bg-opacity-80 flex w-full items-center rounded-md px-2 py-2 text-sm',
       ]"
       @click="onClickHandler(text)"
     >
