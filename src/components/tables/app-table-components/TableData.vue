@@ -21,6 +21,10 @@ import { ref } from "vue";
 import TableRowHeader from "./TableRowHeader.vue";
 import TableCheckbox from "./TableCheckbox.vue";
 import ResponsiveTableData from "./ResponsiveTableData.vue";
+import {
+  useGetKeyAndValue,
+  useRemoveKeysFromObject,
+} from "../../../composables";
 
 interface TableDataProps {
   record: object;
@@ -28,12 +32,14 @@ interface TableDataProps {
 
 const props = defineProps<TableDataProps>();
 
-const values = ref(Object.values(props.record));
-const keys = ref(Object.keys(props.record));
+const recordId = useGetKeyAndValue("id", props.record).value as string;
 
-// remove the id
-const recordId = ref(values.value.shift() as string);
-keys.value.shift();
+const recordWithoutIdAndKeywords = ref(
+  useRemoveKeysFromObject(["id", "keywords"], props.record)
+);
+
+const values = ref(Object.values(recordWithoutIdAndKeywords.value));
+const keys = ref(Object.keys(recordWithoutIdAndKeywords.value));
 
 // save the heading of the table row
 const tableRowHeaderValue = ref(values.value.shift());

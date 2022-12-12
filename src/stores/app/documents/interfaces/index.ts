@@ -4,4 +4,5 @@ export interface ViewDocumentsObject {
   creator: string;
   description: string;
   creationDate: string;
+  keywords: string[];
 }
