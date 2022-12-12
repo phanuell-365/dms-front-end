@@ -61,8 +61,11 @@ import SearchMenuItem from "../../components/tables/search-components/SearchMenu
 import ActionsContainer from "../../components/tables/actions-component/ActionsContainer.vue";
 import TableSearchInput from "../../components/tables/TableSearchInput.vue";
 import { useSearchTable } from "../../composables/search-table";
+import { useSelectionStore } from "../../stores/app/documents/selection";
 
 const routerStore = useRouterStore();
+
+const selectionStore = useSelectionStore();
 
 const route = useRoute();
 
@@ -122,7 +125,26 @@ const query = ref();
 const searchedRecords = ref(useSearchTable(query, selectedSearchKey, records));
 
 const onSelectionHandler = (action: "select-all" | "unselect-all") => {
-  console.log(action);
+  // before selecting all items, check if the user has selected all items
+  // if yes, unselect all items
+  // if no, select all items
+  if (action === "select-all") {
+    // select all items
+    // get all the ids of the records
+    const ids: Ref<string[]> = ref([]);
+
+    records.value.forEach((record) => {
+      ids.value.push(record.id);
+    });
+
+    // for every id, select the item
+    ids.value.forEach((id) => {
+      selectionStore.selectItem(id);
+    });
+  } else {
+    // unselect all items
+    selectionStore.deselectAllItems();
+  }
 };
 
 // @ts-ignore - This is a workaround for a bug in Vue Router 4.0.0-beta.13.

@@ -3,6 +3,7 @@
     <div class="flex items-center justify-center">
       <input
         id="tableRow"
+        ref="checkboxRef"
         :value="value"
         class="w-4 h-4 text-emerald-600 bg-gray-100 rounded border-gray-300 focus:ring-emerald-500 focus:ring-2"
         name="tableRow"
@@ -15,18 +16,47 @@
 </template>
 
 <script lang="ts" setup>
+import { useSelectionStore } from "../../../stores/app/documents/selection";
+import { ref, Ref } from "vue";
+
 interface TableCheckboxProps {
   value: string;
 }
 
-defineProps<TableCheckboxProps>();
+const selectionStore = useSelectionStore();
 
-const emits = defineEmits<{
-  (e: "checkbox-click", value: HTMLInputElement): void;
-}>();
+const props = defineProps<TableCheckboxProps>();
+
+const checkboxRef: Ref<HTMLInputElement | undefined> = ref();
+
+// check if the item is selected in the store, if selected, change the checkbox state to selected
+
+selectionStore.$subscribe(() => {
+  if (selectionStore.isSelected(props.value)) {
+    console.error("selected");
+    if (checkboxRef.value) {
+      checkboxRef.value.checked = true;
+    } else {
+      console.error("checkboxRef is undefined");
+    }
+  } else {
+    if (checkboxRef.value) {
+      checkboxRef.value.checked = false;
+    } else {
+      console.error("checkboxRef is undefined");
+    }
+  }
+});
 
 const onCheckboxClick = (event: Event) => {
-  emits("checkbox-click", event.target as HTMLInputElement);
+  // on checkbox click we need to update the selection store
+  const checkbox = event.target as HTMLInputElement;
+
+  if (checkbox.checked) {
+    selectionStore.selectItem(props.value);
+  } else if (!checkbox.checked) {
+    selectionStore.deselectItem(props.value);
+  }
 };
 </script>
 
