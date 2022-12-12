@@ -1,10 +1,12 @@
 <template>
-  <MenuItem v-slot="{ active }">
+  <MenuItem v-slot="{ active }" :disabled="disabled">
     <button
-      :class="[
-        active ? 'bg-emerald-600 text-white' : 'text-zinc-800',
-        'group bg-opacity-80 flex w-full items-center rounded-md px-2 py-2 text-sm',
-      ]"
+      :class="{
+        'bg-emerald-600 text-white': active,
+        'text-zinc-800': !active,
+        'opacity-60': disabled,
+      }"
+      class="group bg-opacity-80 flex w-full items-center rounded-md px-2 py-2 text-sm"
       @click="onClickHandler(text)"
     >
       <span>{{ startCase(text) }}</span>
@@ -18,6 +20,7 @@ import startCase from "lodash/startCase";
 
 interface SearchMenuItemProps {
   text: string;
+  disabled?: boolean;
 }
 
 defineProps<SearchMenuItemProps>();

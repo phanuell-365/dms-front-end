@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="">
     <div class="flex flex-wrap justify-between items-center pb-4 p-4">
       <div class="sm:basis-auto basis-1/3 md:flex-grow-0 flex-grow">
         <SearchMenuContainer :search-by="selectedSearchKey">
@@ -48,12 +48,16 @@
       <div class="sm:basis-auto md:justify-self-auto justify-self-end">
         <ActionsContainer>
           <template #actions>
-            <SearchMenuItem text="Mark as Read" />
+            <SearchMenuItem disabled text="Mark as Read" />
             <SearchMenuItem text="Send" />
             <SearchMenuItem text="Delete" />
           </template>
         </ActionsContainer>
       </div>
+    </div>
+
+    <div class="p-3">
+      <slot />
     </div>
   </div>
 </template>

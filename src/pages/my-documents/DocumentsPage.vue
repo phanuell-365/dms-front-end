@@ -63,7 +63,7 @@ const gridListData: Ref<GridListItem[]> = ref([
   {
     title: "View documents list",
     description:
-      "View and search through the list of all your sent, received and uploaded documents.",
+      "View and search through the list of all your created/uploaded documents.",
   },
   {
     title: "Send a document",
