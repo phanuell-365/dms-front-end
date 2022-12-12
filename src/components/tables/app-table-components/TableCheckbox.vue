@@ -33,17 +33,12 @@ const checkboxRef: Ref<HTMLInputElement | undefined> = ref();
 
 selectionStore.$subscribe(() => {
   if (selectionStore.isSelected(props.value)) {
-    console.error("selected");
     if (checkboxRef.value) {
       checkboxRef.value.checked = true;
-    } else {
-      console.error("checkboxRef is undefined");
     }
   } else {
     if (checkboxRef.value) {
       checkboxRef.value.checked = false;
-    } else {
-      console.error("checkboxRef is undefined");
     }
   }
 });
