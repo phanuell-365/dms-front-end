@@ -32,7 +32,7 @@
             <TableHeader :headers="headers" @selection="onSelectionHandler" />
           </TableHead>
           <tbody>
-            <TableRow :col-count="headers.length" :records="records">
+            <TableRow :col-count="headers.length" :records="searchedRecords">
               <template #row="{ record }">
                 <TableData :record="record" />
               </template>
@@ -51,7 +51,7 @@ import TableLayout from "../../layouts/TableLayout.vue";
 import TableContainer from "../../components/tables/app-table-components/TableContainer.vue";
 import TableHead from "../../components/tables/app-table-components/TableHead.vue";
 import TableHeader from "../../components/tables/app-table-components/TableHeader.vue";
-import { Ref, ref, watch } from "vue";
+import { Ref, ref } from "vue";
 import TableRow from "../../components/tables/app-table-components/TableRow.vue";
 import { ViewDocumentsObject } from "../../stores/app/documents/interfaces";
 import moment from "moment";
@@ -60,22 +60,11 @@ import SearchMenuContainer from "../../components/tables/search-components/Searc
 import SearchMenuItem from "../../components/tables/search-components/SearchMenuItem.vue";
 import ActionsContainer from "../../components/tables/actions-component/ActionsContainer.vue";
 import TableSearchInput from "../../components/tables/TableSearchInput.vue";
+import { useSearchTable } from "../../composables/search-table";
 
 const routerStore = useRouterStore();
 
 const route = useRoute();
-
-const searchKeys = ref(["title", "creator", "description", "keywords", "type"]);
-
-const selectedSearchKey = ref(searchKeys.value[0]);
-
-const onSearchKeyClick = (searchKey: string) => {
-  selectedSearchKey.value = searchKey;
-};
-
-const query = ref();
-
-watch(query, console.error);
 
 const records: Ref<ViewDocumentsObject[]> = ref([
   {
@@ -85,36 +74,52 @@ const records: Ref<ViewDocumentsObject[]> = ref([
     description: "This is an internal memo addressing the dean of students",
     creationDate: moment().format("DD.MM.YYYY"),
     keywords: ["memo", "internal", "dean"],
+    type: "pdf",
   },
 
   {
-    id: "VD01",
-    title: "Internal Memo",
-    creator: "Registrar",
-    description: "This is an internal memo addressing the dean of students",
+    id: "VD02",
+    title: "Report",
+    creator: "Accounting",
+    description: "This is a report addressing the dean of students",
     creationDate: moment().format("DD.MM.YYYY"),
-    keywords: ["memo", "internal", "dean"],
+    keywords: ["report", "accounting", "dean"],
+    type: "docx",
   },
   {
-    id: "VD01",
-    title: "Internal Memo",
-    creator: "Registrar",
-    description: "This is an internal memo addressing the dean of students",
+    id: "VD03",
+    title: "Letter of Intent",
+    creator: "Computing",
+    description: "A letter of intent addressing the dean of students",
     creationDate: moment().format("DD.MM.YYYY"),
-    keywords: ["memo", "internal", "dean"],
+    keywords: ["intent", "computing", "address"],
+    type: "pptx",
   },
 
   {
-    id: "VD01",
-    title: "Internal Memo",
-    creator: "Registrar",
-    description: "This is an internal memo addressing the dean of students",
+    id: "VD04",
+    title: "Application Letter",
+    creator: "Mass media",
+    description: "Application for admission",
     creationDate: moment().format("DD.MM.YYYY"),
-    keywords: ["memo", "internal", "dean"],
+    keywords: ["application", "letter", "dean", "mass media"],
+    type: "pdf",
   },
 ]);
 
+const searchKeys = ref(["title", "creator", "description", "keywords", "type"]);
+
+const selectedSearchKey = ref(searchKeys.value[0]);
+
 const headers = ref(["title", "creator", "description", "creationDate"]);
+
+const onSearchKeyClick = (searchKey: string) => {
+  selectedSearchKey.value = searchKey;
+};
+
+const query = ref();
+
+const searchedRecords = ref(useSearchTable(query, selectedSearchKey, records));
 
 const onSelectionHandler = (action: "select-all" | "unselect-all") => {
   console.log(action);

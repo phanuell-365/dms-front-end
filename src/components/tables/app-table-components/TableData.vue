@@ -34,12 +34,12 @@ const props = defineProps<TableDataProps>();
 
 const recordId = useGetKeyAndValue("id", props.record).value as string;
 
-const recordWithoutIdAndKeywords = ref(
-  useRemoveKeysFromObject(["id", "keywords"], props.record)
+const newRecord = ref(
+  useRemoveKeysFromObject(["id", "keywords", "type"], props.record)
 );
 
-const values = ref(Object.values(recordWithoutIdAndKeywords.value));
-const keys = ref(Object.keys(recordWithoutIdAndKeywords.value));
+const values = ref(Object.values(newRecord.value));
+const keys = ref(Object.keys(newRecord.value));
 
 // save the heading of the table row
 const tableRowHeaderValue = ref(values.value.shift());

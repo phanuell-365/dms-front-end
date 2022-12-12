@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="text-sm">
     <div class="flex flex-wrap justify-between items-center pb-4 p-4">
       <div class="sm:basis-auto basis-1/3 md:flex-grow-0 flex-grow">
         <slot name="search-menu" />
@@ -22,18 +22,6 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import { computed } from "vue";
-
-interface AppTableContainerProps {
-  searchKey: string;
-}
-
-const props = defineProps<AppTableContainerProps>();
-
-const searchInputPlaceholder = computed(
-  () => `Search for documents by ${props.searchKey}`
-);
-</script>
+<script lang="ts" setup></script>
 
 <style scoped></style>
