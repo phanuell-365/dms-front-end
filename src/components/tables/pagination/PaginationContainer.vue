@@ -45,7 +45,7 @@
       </PaginationButton>
 
       <PaginationButton
-        :disabled="currentPage === totalPages"
+        :disabled="currentPage === totalPages || totalPages === 0"
         :on-click="onNextPage"
       >
         <svg
@@ -62,7 +62,7 @@
       </PaginationButton>
 
       <PaginationButton
-        :disabled="currentPage === totalPages"
+        :disabled="currentPage === totalPages || totalPages === 0"
         :on-click="onLastPage"
       >
         <ChevronDoubleRightIcon class="w-5 h-5" />

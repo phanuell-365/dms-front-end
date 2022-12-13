@@ -371,7 +371,11 @@ const onNextPageClick = () => {
 };
 
 const onPageClick = (page: number) => {
-  currentPage.value = page;
+  if (page > 0 && page <= totalPages.value) {
+    currentPage.value = page;
+  } else {
+    console.log("Invalid page number");
+  }
 };
 
 // disable selecting send and delete when no records are selected
@@ -389,8 +393,8 @@ const onSelectionHandler = (action: "select-all" | "unselect-all") => {
     // get all the ids of the records
     const ids: Ref<string[]> = ref([]);
 
-    records.value.forEach((record) => {
-      ids.value.push(record.id);
+    searchedRecords.value.forEach((record) => {
+      ids.value.push(record["id"]);
     });
 
     // for every id, select the item

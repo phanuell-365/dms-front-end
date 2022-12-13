@@ -11,7 +11,7 @@
   </template>
   <template v-else>
     <tr>
-      <td :colspan="colCount + 2" class="bg-white hover:bg-gray-50">
+      <td :colspan="colCount + 2" class="bg-white hover:bg-gray-50 py-4 px-6">
         <span class="flex justify-center"> {{ comment }} </span>
       </td>
     </tr>
