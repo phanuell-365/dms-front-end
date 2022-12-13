@@ -61,6 +61,10 @@ export const useSelectionStore = defineStore("selection", () => {
     });
   }
 
+  function removeAllItems() {
+    items.value = [];
+  }
+
   function selectAllItems() {
     items.value.forEach((item) => (item.selected = true));
   }
@@ -135,6 +139,7 @@ export const useSelectionStore = defineStore("selection", () => {
     isSelected,
     addItems,
     removeItems,
+    removeAllItems,
     selectAllItems,
     deselectAllItems,
     toggleItem,

@@ -64,7 +64,7 @@
 
 <script lang="ts" setup>
 import { useRouterStore } from "../../stores/router";
-import { useRoute } from "vue-router";
+import { onBeforeRouteLeave, useRoute } from "vue-router";
 import TableLayout from "../../layouts/TableLayout.vue";
 import TableContainer from "../../components/tables/app-table-components/TableContainer.vue";
 import TableHead from "../../components/tables/app-table-components/TableHead.vue";
@@ -487,11 +487,27 @@ provide(currentPageKey, currentPage);
 // @ts-ignore - This is a workaround for a bug in Vue Router 4.0.0-beta.13.
 routerStore.setCurrentRoute(route?.name, route.path);
 
-// onBeforeRouteUpdate((to, from, next) => {
-//   routerStore.setCurrentRoute(to.name, to.path);
-//
-//   next();
-// });
+onBeforeRouteLeave((to, from, next) => {
+  // on before route update, reset the current page to 1 and the query to an empty string
+  // also reset the selection mode to false and deselect all items
+  // also reset the selection store
+  // also reset the search key to the first search key
+  // also reset the search results store
+  currentPage.value = 1;
+
+  query.value = "";
+
+  selectionStore.setSelectionMode(false);
+
+  selectionStore.deselectAllItems();
+
+  selectionStore.removeAllItems();
+
+  // selectedSearchKey.value = searchKeys.value[0];
+  //
+  // searchResultsStore.reset();
+  next();
+});
 </script>
 
 <style scoped></style>

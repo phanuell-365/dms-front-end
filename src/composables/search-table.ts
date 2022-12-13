@@ -14,9 +14,7 @@ export const useSearchTable = <T>(
   const filteredRecords: Ref<T[]> = ref([...records.value]);
 
   const fuse = new Fuse(records.value, options);
-  const result = fuse
-    .search(query.value.toLowerCase())
-    .map((value1) => value1.item);
+  const result = fuse.search(query.value).map((value1) => value1.item);
   filteredRecords.value = query.value === "" ? records.value : result;
 
   return filteredRecords;

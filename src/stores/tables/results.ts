@@ -40,6 +40,11 @@ export const useSearchResultsStore = defineStore("search-results", <T>() => {
     });
   }
 
+  function reset() {
+    results.value = items.value;
+    resultsCount.value = items.value.length;
+  }
+
   const getTotalPageCount = computed(() => {
     return Math.ceil(resultsCount.value / ITEMS_PER_PAGE);
   });
@@ -56,8 +61,10 @@ export const useSearchResultsStore = defineStore("search-results", <T>() => {
     getResults,
     getResultsCount,
     query,
+    selectedSearchKey,
+    getTotalPageCount,
+    reset,
     results,
     resultsCount,
-    getTotalPageCount,
   };
 });
