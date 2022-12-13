@@ -85,6 +85,7 @@ import { useSearchResultsStore } from "../../stores/tables/results";
 import { storeToRefs } from "pinia";
 import { ITEMS_PER_PAGE } from "../../stores/tables/const";
 import { currentPageKey } from "../../components/keys";
+import { usePluralize } from "../../composables/pluralize";
 
 const routerStore = useRouterStore();
 
@@ -356,12 +357,6 @@ const onSearchKeyClick = (searchKey: string) => {
 
 const currentPage = ref(1);
 
-// const totalRecords = computed(() => getResults.value.length);
-
-// const totalPages = computed(() =>
-//   Math.ceil(totalRecords.value / recordsPerPage.value)
-// );
-
 // put the records in the current page in a new array
 
 const onPageClick = (page: number) => {
@@ -374,33 +369,11 @@ const paginatedRecords = computed(() => {
   return getResults.value.slice(start, end);
 });
 
-// const onPreviousPageClick = () => {
-//   if (currentPage.value > 1) {
-//     currentPage.value--;
-//   }
-// };
-//
-// const onNextPageClick = () => {
-//   if (currentPage.value < totalPages.value) {
-//     currentPage.value++;
-//   }
-// };
-//
-// const onPageClick = (page: number) => {
-//   if (page > 0 && page <= totalPages.value) {
-//     currentPage.value = page;
-//   }
-// };
-
 // disable selecting send and delete when no records are selected
 
 const disableSendAndDelete = computed(() => {
   return !selectionStore.getIsAnyItemSelected;
 });
-
-// const disableSelectAll = computed(() => {
-//   return selectionStore.getIsAllItemsSelected;
-// });
 
 const onSelectModeClick = (selectItemMessage: string) => {
   if (selectItemMessage === "Select Items") {
@@ -454,7 +427,10 @@ const computeSelectAllMessage = computed(() => {
 
 const computeSendMessageText = computed(() => {
   if (selectionStore.getIsAnyItemSelected) {
-    return `Send (${numberOfSelectedRecords.value}) item(s)`;
+    return `Send (${numberOfSelectedRecords.value}) ${usePluralize(
+      "item",
+      numberOfSelectedRecords.value
+    )}`;
   } else {
     return "Send";
   }
@@ -462,7 +438,10 @@ const computeSendMessageText = computed(() => {
 
 const computeDeleteMessageText = computed(() => {
   if (selectionStore.getIsAnyItemSelected) {
-    return `Delete (${numberOfSelectedRecords.value}) item(s)`;
+    return `Delete (${numberOfSelectedRecords.value}) ${usePluralize(
+      "item",
+      numberOfSelectedRecords.value
+    )}`;
   } else {
     return "Delete";
   }
