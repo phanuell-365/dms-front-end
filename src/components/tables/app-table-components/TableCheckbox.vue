@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useSelectionStore } from "../../../stores/app/documents/selection";
+import { useSelectionStore } from "../../../stores/tables/selection";
 import { ref, Ref } from "vue";
 
 interface TableCheckboxProps {

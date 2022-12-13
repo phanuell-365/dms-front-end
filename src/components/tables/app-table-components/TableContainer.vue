@@ -1,8 +1,16 @@
 <template>
-  <div class="rounded-lg shadow-lg border">
-    <table class="w-full text-sm text-left text-stone-500 dark:text-stone-400">
+  <div
+    class="md:rounded-lg shadow-lg border md:overflow-hidden overflow-x-auto"
+  >
+    <table
+      class="w-full table table-auto md:text-sm text-xs text-left text-stone-500"
+    >
       <slot />
     </table>
+  </div>
+
+  <div>
+    <slot name="pagination" />
   </div>
 </template>
 

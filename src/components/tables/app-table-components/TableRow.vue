@@ -3,7 +3,7 @@
     <tr
       v-for="record in records"
       :key="record?.id"
-      class="group/table-row bg-white border-b dark:bg-zinc-800 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-600"
+      class="group/table-row bg-white border-b hover:bg-gray-50"
       tabindex="0"
     >
       <slot :record="record" name="row" />
@@ -11,10 +11,7 @@
   </template>
   <template v-else>
     <tr>
-      <td
-        :colspan="colCount + 2"
-        class="bg-white dark:bg-zinc-800 py-4 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-600"
-      >
+      <td :colspan="colCount + 2" class="bg-white hover:bg-gray-50">
         <span class="flex justify-center"> {{ comment }} </span>
       </td>
     </tr>

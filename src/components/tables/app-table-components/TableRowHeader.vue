@@ -1,6 +1,6 @@
 <template>
   <th
-    class="py-2 px-3 font-medium text-stone-900 whitespace-nowrap dark:text-white"
+    class="py-2 px-3 font-medium text-stone-900 whitespace-nowrap"
     scope="row"
   >
     <slot />
