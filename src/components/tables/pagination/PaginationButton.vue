@@ -5,7 +5,7 @@
       'bg-gray-100': active,
     }"
     :disabled="disabled"
-    class="flex items-center justify-center md:w-8 w-6 md:h-8 h-6 md:text-sm text-xs font-medium text-stone-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+    class="flex items-center justify-center md:w-8 w-6 md:h-8 h-6 md:text-sm text-xs font-medium text-stone-700 bg-white border border-gray-300 md:rounded-md rounded hover:bg-gray-50"
     @click="onClick"
   >
     <slot />

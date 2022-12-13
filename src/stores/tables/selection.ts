@@ -88,6 +88,12 @@ export const useSelectionStore = defineStore("selection", () => {
     items.value.filter((item) => item.selected).map((item) => item.id)
   );
 
+  // create a computed property that returns true if at least one item is selected
+
+  const getIsAnyItemSelected = computed(() => {
+    return items.value.some((item) => item.selected);
+  });
+
   return {
     items,
     selectItem,
@@ -102,5 +108,6 @@ export const useSelectionStore = defineStore("selection", () => {
     getSelectedItems,
     getSelectedItemsCount,
     getSelectedItemsIds,
+    getIsAnyItemSelected,
   };
 });

@@ -17,7 +17,7 @@
 
 <script lang="ts" setup>
 import { useSelectionStore } from "../../../stores/tables/selection";
-import { ref, Ref } from "vue";
+import { onBeforeUpdate, onMounted, ref, Ref } from "vue";
 
 interface TableCheckboxProps {
   value: string;
@@ -32,6 +32,30 @@ const checkboxRef: Ref<HTMLInputElement | undefined> = ref();
 // check if the item is selected in the store, if selected, change the checkbox state to selected
 
 selectionStore.$subscribe(() => {
+  if (selectionStore.isSelected(props.value)) {
+    if (checkboxRef.value) {
+      checkboxRef.value.checked = true;
+    }
+  } else {
+    if (checkboxRef.value) {
+      checkboxRef.value.checked = false;
+    }
+  }
+});
+
+onMounted(() => {
+  if (selectionStore.isSelected(props.value)) {
+    if (checkboxRef.value) {
+      checkboxRef.value.checked = true;
+    }
+  } else {
+    if (checkboxRef.value) {
+      checkboxRef.value.checked = false;
+    }
+  }
+});
+
+onBeforeUpdate(() => {
   if (selectionStore.isSelected(props.value)) {
     if (checkboxRef.value) {
       checkboxRef.value.checked = true;

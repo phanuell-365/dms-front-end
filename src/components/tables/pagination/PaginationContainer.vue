@@ -1,7 +1,7 @@
 <template>
   <nav
     aria-label="Table navigation"
-    class="flex justify-between items-center pt-4"
+    class="flex items-center justify-between md:px-4 py-3 bg-white border-t border-gray-200 sm:px-6"
   >
     <span class="md:text-sm text-xs font-normal text-gray-500"
       >Showing
@@ -14,12 +14,12 @@
       </span></span
     >
     <div class="flex justify-between items-center space-x-2">
-      <PaginationButton :disabled="currentPage === 1" :on-click="onFirstPage">
+      <PaginationButton :disabled="disableFirstPage" :on-click="onFirstPage">
         <ChevronDoubleLeftIcon class="w-5 h-5" />
       </PaginationButton>
 
       <PaginationButton
-        :disabled="currentPage === 1"
+        :disabled="disablePreviousPage"
         :on-click="onPreviousPage"
       >
         <svg
@@ -44,10 +44,7 @@
         {{ page }}
       </PaginationButton>
 
-      <PaginationButton
-        :disabled="currentPage === totalPages || totalPages === 0"
-        :on-click="onNextPage"
-      >
+      <PaginationButton :disabled="disableNextPage" :on-click="onNextPage">
         <svg
           class="w-5 h-5"
           fill="none"
@@ -61,10 +58,7 @@
         </svg>
       </PaginationButton>
 
-      <PaginationButton
-        :disabled="currentPage === totalPages || totalPages === 0"
-        :on-click="onLastPage"
-      >
+      <PaginationButton :disabled="disableLastPage" :on-click="onLastPage">
         <ChevronDoubleRightIcon class="w-5 h-5" />
       </PaginationButton>
     </div>
@@ -78,6 +72,7 @@ import {
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
 } from "@heroicons/vue/24/outline";
+import { useSelectionStore } from "../../../stores/tables/selection";
 
 interface PaginationContainerProps {
   totalRows: number;
@@ -94,6 +89,10 @@ const emits = defineEmits<{
   (event: "page-number", pageNumber: number): void;
 }>();
 
+const selectionStore = useSelectionStore();
+
+const disabled = computed(() => selectionStore.getIsAnyItemSelected);
+
 const onPreviousPage = () => {
   emits("previous-page");
 };
@@ -103,11 +102,19 @@ const onNextPage = () => {
 };
 
 const firstRow = computed(() => {
-  return props.rowsPerPage * (props.currentPage - 1) + 1;
+  if (props.totalRows === 0) {
+    return 0;
+  } else {
+    return (props.currentPage - 1) * props.rowsPerPage + 1;
+  }
 });
 
 const lastRow = computed(() => {
-  return Math.min(props.rowsPerPage * props.currentPage, props.totalRows);
+  if (props.totalRows === 0) {
+    return 0;
+  } else {
+    return Math.min(props.currentPage * props.rowsPerPage, props.totalRows);
+  }
 });
 
 const onPageNumber = (pageNumber: number) => {
@@ -132,6 +139,18 @@ const nextPages = computed(() => {
   }
   return pages;
 });
+
+const disableFirstPage = computed(() => props.currentPage === 1);
+
+const disableLastPage = computed(
+  () => props.currentPage === props.totalPages || props.totalPages === 0
+);
+
+const disablePreviousPage = computed(() => props.currentPage === 1);
+
+const disableNextPage = computed(
+  () => props.currentPage === props.totalPages || props.totalPages === 0
+);
 </script>
 
 <style scoped></style>

@@ -13,7 +13,11 @@
       </template>
 
       <template #search-input>
-        <TableSearchInput v-model="query" :search-key="selectedSearchKey" />
+        <TableSearchInput
+          v-model="query"
+          :search-key="selectedSearchKey"
+          @search-input-focus="onSearchInputFocus"
+        />
       </template>
 
       <template #actions-menu>
@@ -373,16 +377,26 @@ const onNextPageClick = () => {
 const onPageClick = (page: number) => {
   if (page > 0 && page <= totalPages.value) {
     currentPage.value = page;
-  } else {
-    console.log("Invalid page number");
   }
 };
 
 // disable selecting send and delete when no records are selected
 
 const disableSendAndDelete = computed(() => {
-  return selectionStore.getSelectedItemsCount === 0;
+  return !selectionStore.getIsAnyItemSelected;
 });
+
+const onSearchInputFocus = () => {
+  query.value = "";
+
+  // reset the search key to the first one
+
+  selectedSearchKey.value = searchKeys.value[0];
+
+  // reset the current page to 1
+
+  currentPage.value = 1;
+};
 
 const onSelectionHandler = (action: "select-all" | "unselect-all") => {
   // before selecting all items, check if the user has selected all items
@@ -394,6 +408,7 @@ const onSelectionHandler = (action: "select-all" | "unselect-all") => {
     const ids: Ref<string[]> = ref([]);
 
     searchedRecords.value.forEach((record) => {
+      // @ts-ignore
       ids.value.push(record["id"]);
     });
 
