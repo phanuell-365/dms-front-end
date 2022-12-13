@@ -1,28 +1,23 @@
-import { reactive, ref, Ref, watch } from "vue";
+import { reactive, ref, Ref } from "vue";
 import Fuse from "fuse.js";
 
-export const useSearchTable = (
+export const useSearchTable = <T>(
   query: Ref<string>,
   selectedSearchKey: Ref<string>,
-  records: Ref<object[]>
+  records: Ref<T[]>
 ) => {
   const options = reactive({
     keys: [selectedSearchKey.value],
   });
 
-  const filteredRecords = ref([...records.value]);
+  // @ts-ignore
+  const filteredRecords: Ref<T[]> = ref([...records.value]);
 
-  watch(selectedSearchKey, (value) => {
-    options.keys = [value];
-  });
-
-  watch(query, (value) => {
-    const fuse = new Fuse(records.value, options);
-    const result = fuse
-      .search(value.toLowerCase())
-      .map((value1) => value1.item);
-    filteredRecords.value = value === "" ? records.value : result;
-  });
+  const fuse = new Fuse(records.value, options);
+  const result = fuse
+    .search(query.value.toLowerCase())
+    .map((value1) => value1.item);
+  filteredRecords.value = query.value === "" ? records.value : result;
 
   return filteredRecords;
 };

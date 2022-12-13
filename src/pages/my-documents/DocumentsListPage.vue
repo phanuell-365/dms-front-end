@@ -90,15 +90,18 @@ import SearchMenuContainer from "../../components/tables/search-components/Searc
 import SearchMenuItem from "../../components/tables/search-components/SearchMenuItem.vue";
 import ActionsContainer from "../../components/tables/actions-component/ActionsContainer.vue";
 import TableSearchInput from "../../components/tables/TableSearchInput.vue";
-import { useSearchTable } from "../../composables/search-table";
 import { useSelectionStore } from "../../stores/tables/selection";
 import PaginationContainer from "../../components/tables/pagination/PaginationContainer.vue";
 import startCase from "lodash/startCase";
 import camelCase from "lodash/camelCase";
+import { useDocumentsSearchResultsStore } from "../../stores/app/documents/results";
+import { storeToRefs } from "pinia";
 
 const routerStore = useRouterStore();
 
 const selectionStore = useSelectionStore();
+
+const documentsSearchResultsStore = useDocumentsSearchResultsStore();
 
 const route = useRoute();
 
@@ -352,7 +355,9 @@ const headers = ref(["title", "creator", "description", "creationDate"]);
 
 const query = ref();
 
-const searchedRecords = ref(useSearchTable(query, selectedSearchKey, records));
+const { getResults } = storeToRefs(documentsSearchResultsStore);
+
+documentsSearchResultsStore.setUpTheStore(records, selectedSearchKey, query);
 
 const onSearchKeyClick = (searchKey: string) => {
   selectedSearchKey.value = camelCase(searchKey);
@@ -364,7 +369,7 @@ const currentPage = ref(1);
 
 const recordsPerPage = ref(6);
 
-const totalRecords = computed(() => searchedRecords.value.length);
+const totalRecords = computed(() => getResults.value.length);
 
 const totalPages = computed(() =>
   Math.ceil(totalRecords.value / recordsPerPage.value)
@@ -375,7 +380,7 @@ const totalPages = computed(() =>
 const paginatedRecords = computed(() => {
   const start = (currentPage.value - 1) * recordsPerPage.value;
   const end = start + recordsPerPage.value;
-  return searchedRecords.value.slice(start, end);
+  return getResults.value.slice(start, end);
 });
 
 const onPreviousPageClick = () => {
@@ -453,7 +458,7 @@ const computeSelectItemsMessage = computed(() => {
 });
 
 const computeSelectAllMessage = computed(() => {
-  return selectionStore.getIsAllItemsSelected(searchedRecords.value.length)
+  return selectionStore.getIsAllItemsSelected(getResults.value.length)
     ? "Unselect all"
     : "Select all";
 });
@@ -494,9 +499,8 @@ const onSelectionHandler = (action: "select-all" | "unselect-all") => {
     // get all the ids of the records
     const ids: Ref<string[]> = ref([]);
 
-    searchedRecords.value.forEach((record) => {
-      // @ts-ignore
-      ids.value.push(record["id"]);
+    getResults.value.forEach((record) => {
+      ids.value.push(record.id);
     });
 
     // for every id, select the item
