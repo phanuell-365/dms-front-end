@@ -1,5 +1,5 @@
 <template>
-  <td class="py-4 px-3">
+  <td v-show="selectionMode" class="py-4 px-3">
     <div class="flex items-center justify-center">
       <input
         id="tableRow"
@@ -17,7 +17,7 @@
 
 <script lang="ts" setup>
 import { useSelectionStore } from "../../../stores/tables/selection";
-import { onBeforeUpdate, onMounted, ref, Ref } from "vue";
+import { computed, onBeforeUpdate, onMounted, ref, Ref } from "vue";
 
 interface TableCheckboxProps {
   value: string;
@@ -77,6 +77,8 @@ const onCheckboxClick = (event: Event) => {
     selectionStore.deselectItem(props.value);
   }
 };
+
+const selectionMode = computed(() => selectionStore.selectionMode);
 </script>
 
 <style scoped></style>

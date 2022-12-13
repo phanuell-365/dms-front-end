@@ -6,7 +6,7 @@
           <SearchMenuItem
             v-for="searchKey in searchKeys"
             :key="searchKey"
-            :text="searchKey"
+            :text="startCase(searchKey)"
             @search-key-click="onSearchKeyClick"
           />
         </SearchMenuContainer>
@@ -23,9 +23,23 @@
       <template #actions-menu>
         <ActionsContainer>
           <template #actions>
+            <SearchMenuItem
+              :text="computeSelectItemsMessage"
+              @search-key-click="onSelectModeClick(computeSelectItemsMessage)"
+            />
+            <SearchMenuItem
+              :text="computeSelectAllMessage"
+              @search-key-click="onSelectAllClick(computeSelectAllMessage)"
+            />
             <SearchMenuItem disabled text="Mark as Read" />
-            <SearchMenuItem :disabled="disableSendAndDelete" text="Send" />
-            <SearchMenuItem :disabled="disableSendAndDelete" text="Delete" />
+            <SearchMenuItem
+              :disabled="disableSendAndDelete"
+              :text="computeSendMessageText"
+            />
+            <SearchMenuItem
+              :disabled="disableSendAndDelete"
+              :text="computeDeleteMessageText"
+            />
           </template>
         </ActionsContainer>
       </template>
@@ -79,6 +93,8 @@ import TableSearchInput from "../../components/tables/TableSearchInput.vue";
 import { useSearchTable } from "../../composables/search-table";
 import { useSelectionStore } from "../../stores/tables/selection";
 import PaginationContainer from "../../components/tables/pagination/PaginationContainer.vue";
+import startCase from "lodash/startCase";
+import camelCase from "lodash/camelCase";
 
 const routerStore = useRouterStore();
 
@@ -339,7 +355,7 @@ const query = ref();
 const searchedRecords = ref(useSearchTable(query, selectedSearchKey, records));
 
 const onSearchKeyClick = (searchKey: string) => {
-  selectedSearchKey.value = searchKey;
+  selectedSearchKey.value = camelCase(searchKey);
 };
 
 // pagination
@@ -386,12 +402,83 @@ const disableSendAndDelete = computed(() => {
   return !selectionStore.getIsAnyItemSelected;
 });
 
+// const disableSelectAll = computed(() => {
+//   return selectionStore.getIsAllItemsSelected;
+// });
+
+const onSelectModeClick = (selectItemMessage: string) => {
+  if (selectItemMessage === "Select Items") {
+    // set selection mode to true
+    selectionStore.setSelectionMode(true);
+  } else {
+    // set selection mode to false
+    selectionStore.setSelectionMode(false);
+
+    // deselect all items
+    selectionStore.deselectAllItems();
+  }
+};
+
+const onSelectAllClick = (selectAllItems: string) => {
+  if (selectAllItems === "Select all") {
+    // check if we are in select mode, if not then toggle it
+    if (!selectionStore.getSelectMode) {
+      selectionStore.setSelectionMode(true);
+
+      onSelectionHandler("select-all");
+    } else {
+      onSelectionHandler("select-all");
+    }
+  } else {
+    onSelectionHandler("unselect-all");
+
+    // then set select mode to false
+    selectionStore.setSelectionMode(false);
+
+    // then deselect all selected items
+    selectionStore.deselectAllItems();
+  }
+};
+
+const numberOfSelectedRecords = computed(() => {
+  return selectionStore.getSelectedItemsCount;
+});
+
+const computeSelectItemsMessage = computed(() => {
+  if (!selectionStore.getSelectMode) {
+    return "Select Items";
+  } else {
+    return "Unselect Items";
+  }
+});
+
+const computeSelectAllMessage = computed(() => {
+  return selectionStore.getIsAllItemsSelected(searchedRecords.value.length)
+    ? "Unselect all"
+    : "Select all";
+});
+
+const computeSendMessageText = computed(() => {
+  if (selectionStore.getIsAnyItemSelected) {
+    return `Send (${numberOfSelectedRecords.value}) item(s)`;
+  } else {
+    return "Send";
+  }
+});
+
+const computeDeleteMessageText = computed(() => {
+  if (selectionStore.getIsAnyItemSelected) {
+    return `Delete (${numberOfSelectedRecords.value}) item(s)`;
+  } else {
+    return "Delete";
+  }
+});
+
 const onSearchInputFocus = () => {
-  query.value = "";
-
-  // reset the search key to the first one
-
-  selectedSearchKey.value = searchKeys.value[0];
+  // reset the query if no query is entered or no item is selected
+  if (!query.value || !selectionStore.getIsAnyItemSelected) {
+    query.value = "";
+  }
 
   // reset the current page to 1
 

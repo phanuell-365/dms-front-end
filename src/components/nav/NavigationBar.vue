@@ -27,8 +27,6 @@ routeName.value = routerStore.getCurrentRouteName;
 
 routerStore.$subscribe((mutation, state) => {
   routeName.value = state.currentRouteName;
-  console.error(routeName.value);
-  console.error(state.currentRouteName);
 });
 </script>
 

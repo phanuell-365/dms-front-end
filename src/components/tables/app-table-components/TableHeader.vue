@@ -1,8 +1,9 @@
 <template>
-  <th class="md:p-2" scope="col">
+  <th v-show="selectionMode" class="md:p-2" scope="col">
     <div class="flex items-center justify-center">
       <input
         id="tableRow"
+        ref="checkboxRef"
         class="w-4 h-4 text-emerald-600 focus:text-emerald-600 bg-emerald-100 rounded border-emerald-600 focus:ring-emerald-600 focus:ring-2"
         name="tableRow"
         type="checkbox"
@@ -19,6 +20,8 @@
 
 <script lang="ts" setup>
 import startCase from "lodash/startCase";
+import { computed, ref, Ref } from "vue";
+import { useSelectionStore } from "../../../stores/tables/selection";
 
 interface TableHeaderProps {
   headers: string[];
@@ -30,6 +33,22 @@ const emits = defineEmits<{
   (e: "selection", action: "select-all" | "unselect-all"): void;
 }>();
 
+const checkboxRef: Ref<HTMLInputElement | undefined> = ref();
+
+const selectionStore = useSelectionStore();
+
+selectionStore.$subscribe(() => {
+  if (selectionStore.getIsAllItemsSelected) {
+    if (checkboxRef.value) {
+      checkboxRef.value.checked = true;
+    }
+  } else {
+    if (checkboxRef.value) {
+      checkboxRef.value.checked = false;
+    }
+  }
+});
+
 const onCheckboxClick = (event: Event) => {
   const checkbox = event.target as HTMLInputElement;
 
@@ -39,6 +58,8 @@ const onCheckboxClick = (event: Event) => {
     emits("selection", "unselect-all");
   }
 };
+
+const selectionMode = computed(() => selectionStore.selectionMode);
 </script>
 
 <style scoped></style>

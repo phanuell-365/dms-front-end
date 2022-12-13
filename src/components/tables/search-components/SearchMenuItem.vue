@@ -6,17 +6,16 @@
         'text-zinc-800': !active,
         'opacity-60': disabled,
       }"
-      class="group bg-opacity-80 flex w-full items-center rounded-md px-2 py-2 text-sm"
+      class="group bg-opacity-80 flex w-full items-center rounded-md px-2 py-2 text-xs"
       @click="onClickHandler(text)"
     >
-      <span>{{ startCase(text) }}</span>
+      <span>{{ text }}</span>
     </button>
   </MenuItem>
 </template>
 
 <script lang="ts" setup>
 import { MenuItem } from "@headlessui/vue";
-import startCase from "lodash/startCase";
 
 interface SearchMenuItemProps {
   text: string;

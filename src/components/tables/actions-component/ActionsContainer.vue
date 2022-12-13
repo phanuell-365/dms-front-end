@@ -2,7 +2,7 @@
   <Menu v-slot="{ open }" as="div" class="relative inline-block text-left">
     <div>
       <MenuButton
-        class="inline-flex w-full items-center justify-center px-4 py-2 rounded bg-gray-300 bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+        class="inline-flex w-full text-sm items-center justify-center px-4 py-2 rounded bg-gray-300 bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
       >
         Actions
         <ChevronDownIcon

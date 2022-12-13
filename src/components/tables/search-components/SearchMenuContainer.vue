@@ -2,21 +2,17 @@
   <Menu v-slot="{ open }" as="div" class="relative inline-block text-left">
     <div>
       <MenuButton
-        class="inline-flex w-full md:text-base text-sm items-center justify-center px-4 py-2 rounded bg-gray-300 bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+        class="inline-flex w-full text-sm items-center justify-center px-4 py-2 rounded bg-gray-300 bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
       >
         Search by {{ searchBy }}
-        <span
-          class="md:p-1 p-0.5 ml-2 -mr-1 rounded flex items-center justify-center"
-        >
-          <ChevronDownIcon
-            :class="{
-              '-rotate-180 transform transition delay-100 duration-75 ease-in-out':
-                open,
-            }"
-            aria-hidden="true"
-            class="md:m-1 m-0.5 h-4 w-4 text-zinc-700 hover:text-zinc-500"
-          />
-        </span>
+        <ChevronDownIcon
+          :class="{
+            '-rotate-180 transform transition delay-100 duration-75 ease-in-out':
+              open,
+          }"
+          aria-hidden="true"
+          class="ml-2 -mr-1 h-4 w-4 text-zinc-700 hover:text-zinc-500"
+        />
       </MenuButton>
     </div>
 
