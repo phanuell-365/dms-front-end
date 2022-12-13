@@ -94,14 +94,14 @@ import { useSelectionStore } from "../../stores/tables/selection";
 import PaginationContainer from "../../components/tables/pagination/PaginationContainer.vue";
 import startCase from "lodash/startCase";
 import camelCase from "lodash/camelCase";
-import { useDocumentsSearchResultsStore } from "../../stores/app/documents/results";
+import { useSearchResults } from "../../stores/tables/results";
 import { storeToRefs } from "pinia";
 
 const routerStore = useRouterStore();
 
 const selectionStore = useSelectionStore();
 
-const documentsSearchResultsStore = useDocumentsSearchResultsStore();
+const searchResultsStore = useSearchResults();
 
 const route = useRoute();
 
@@ -355,9 +355,9 @@ const headers = ref(["title", "creator", "description", "creationDate"]);
 
 const query = ref();
 
-const { getResults } = storeToRefs(documentsSearchResultsStore);
+const { getResults } = storeToRefs(searchResultsStore);
 
-documentsSearchResultsStore.setUpTheStore(records, selectedSearchKey, query);
+searchResultsStore.setUpTheStore(records, selectedSearchKey, query);
 
 const onSearchKeyClick = (searchKey: string) => {
   selectedSearchKey.value = camelCase(searchKey);
@@ -500,7 +500,8 @@ const onSelectionHandler = (action: "select-all" | "unselect-all") => {
     const ids: Ref<string[]> = ref([]);
 
     getResults.value.forEach((record) => {
-      ids.value.push(record.id);
+      // @ts-ignore
+      ids.value.push(record["id"]);
     });
 
     // for every id, select the item
