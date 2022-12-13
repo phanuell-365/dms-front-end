@@ -1,9 +1,10 @@
 import { computed, ref, Ref, watch } from "vue";
 import { defineStore } from "pinia";
 import { useSearchTable } from "../../composables/search-table";
+import { ITEMS_PER_PAGE } from "./const";
 
-export const useSearchResults = defineStore("search-results", <T>() => {
-  const documents: Ref<T[]> = ref([]);
+export const useSearchResultsStore = defineStore("search-results", <T>() => {
+  const items: Ref<T[]> = ref([]);
   const query: Ref<string> = ref("");
   const selectedSearchKey: Ref<string> = ref("");
   const results: Ref<T[]> = ref([]);
@@ -14,7 +15,7 @@ export const useSearchResults = defineStore("search-results", <T>() => {
     searchKey: Ref<string>,
     searchQuery: Ref<string>
   ) {
-    documents.value = docs.value;
+    items.value = docs.value;
     selectedSearchKey.value = searchKey.value;
     query.value = searchQuery.value;
 
@@ -24,30 +25,26 @@ export const useSearchResults = defineStore("search-results", <T>() => {
 
     watch(searchKey, (value) => {
       selectedSearchKey.value = searchKey.value;
-      const filteredRecords = useSearchTable(
-        query,
-        selectedSearchKey,
-        documents
-      );
-      results.value = value === "" ? documents.value : filteredRecords.value;
+      const filteredRecords = useSearchTable(query, selectedSearchKey, items);
+      results.value = value === "" ? items.value : filteredRecords.value;
       resultsCount.value = results.value.length;
     });
 
     watch(searchQuery, (value) => {
       query.value = searchQuery.value;
 
-      const filteredRecords = useSearchTable(
-        query,
-        selectedSearchKey,
-        documents
-      );
+      const filteredRecords = useSearchTable(query, selectedSearchKey, items);
 
-      results.value = value === "" ? documents.value : filteredRecords.value;
+      results.value = value === "" ? items.value : filteredRecords.value;
       resultsCount.value = results.value.length;
     });
   }
 
-  const getDocuments = computed(() => documents.value);
+  const getTotalPageCount = computed(() => {
+    return Math.ceil(resultsCount.value / ITEMS_PER_PAGE);
+  });
+
+  const getItems = computed(() => items.value);
 
   const getResults = computed(() => results.value);
 
@@ -55,11 +52,12 @@ export const useSearchResults = defineStore("search-results", <T>() => {
 
   return {
     setUpTheStore,
-    getDocuments,
+    getItems,
     getResults,
     getResultsCount,
     query,
     results,
     resultsCount,
+    getTotalPageCount,
   };
 });

@@ -1,5 +1,6 @@
-import { defineStore } from "pinia";
+import { defineStore, storeToRefs } from "pinia";
 import { computed, ref, Ref } from "vue";
+import { useSearchResultsStore } from "./results";
 
 interface Item {
   id: string;
@@ -8,6 +9,9 @@ interface Item {
 
 export const useSelectionStore = defineStore("selection", () => {
   const items: Ref<Item[]> = ref([]);
+  const searchResultsStore = useSearchResultsStore();
+
+  const { getResultsCount } = storeToRefs(searchResultsStore);
 
   const selectionMode = ref(false);
 
@@ -108,17 +112,17 @@ export const useSelectionStore = defineStore("selection", () => {
 
   // create a computed property that returns true if all items are selected
 
-  const getIsAllItemsSelected = (searchedItemsLength: number) =>
-    computed(() => {
-      if (items.value.length === 0) {
-        return false;
-      }
+  const getIsAllItemsSelected = computed(() => {
+    if (items.value.length === 0 || getResultsCount.value === 0) {
+      return false;
+    }
 
-      return (
-        searchedItemsLength ===
-        items.value.filter((item) => item.selected).length
-      );
-    });
+    // if the number of selected items is equal to the number of results, then all items are selected
+    return (
+      items.value.filter((item) => item.selected).length ===
+      getResultsCount.value
+    );
+  });
 
   return {
     items,

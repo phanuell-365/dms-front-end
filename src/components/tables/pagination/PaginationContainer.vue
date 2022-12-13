@@ -66,18 +66,18 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed, inject, Ref } from "vue";
 import PaginationButton from "./PaginationButton.vue";
 import {
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
 } from "@heroicons/vue/24/outline";
 import { useSelectionStore } from "../../../stores/tables/selection";
+import { currentPageKey } from "../../keys";
 
 interface PaginationContainerProps {
   totalRows: number;
   rowsPerPage: number;
-  currentPage: number;
   totalPages: number;
 }
 
@@ -93,6 +93,12 @@ const selectionStore = useSelectionStore();
 
 const disabled = computed(() => selectionStore.getIsAnyItemSelected);
 
+const currentPage = inject<Ref<number>>(currentPageKey);
+
+if (!currentPage) {
+  throw new Error("currentPage is not provided");
+}
+
 const onPreviousPage = () => {
   emits("previous-page");
 };
@@ -102,19 +108,23 @@ const onNextPage = () => {
 };
 
 const firstRow = computed(() => {
+  // if (currentPage?.value) {
   if (props.totalRows === 0) {
     return 0;
   } else {
-    return (props.currentPage - 1) * props.rowsPerPage + 1;
+    return (currentPage?.value - 1) * props.rowsPerPage + 1;
   }
+  // }
 });
 
 const lastRow = computed(() => {
+  // if (currentPage?.value) {
   if (props.totalRows === 0) {
     return 0;
   } else {
-    return Math.min(props.currentPage * props.rowsPerPage, props.totalRows);
+    return Math.min(currentPage?.value * props.rowsPerPage, props.totalRows);
   }
+  // }
 });
 
 const onPageNumber = (pageNumber: number) => {
@@ -130,27 +140,41 @@ const onLastPage = () => {
 };
 
 const nextPages = computed(() => {
+  // if (currentPage?.value) {
   const pages = [];
   for (let i = 0; i < 3; i++) {
-    const page = props.currentPage + i;
+    const page = currentPage?.value + i;
     if (page <= props.totalPages) {
       pages.push(page);
     }
   }
   return pages;
+  // }
 });
 
-const disableFirstPage = computed(() => props.currentPage === 1);
+const disableFirstPage = computed(() => {
+  // if (currentPage?.value) {
+  return currentPage?.value === 1;
+  // }
+});
 
-const disableLastPage = computed(
-  () => props.currentPage === props.totalPages || props.totalPages === 0
-);
+const disableLastPage = computed(() => {
+  // if (currentPage?.value) {
+  return currentPage.value === props.totalPages || props.totalPages === 0;
+  // }
+});
 
-const disablePreviousPage = computed(() => props.currentPage === 1);
+const disablePreviousPage = computed(() => {
+  // if (currentPage?.value) {
+  return currentPage?.value === 1;
+  // }
+});
 
-const disableNextPage = computed(
-  () => props.currentPage === props.totalPages || props.totalPages === 0
-);
+const disableNextPage = computed(() => {
+  // if (currentPage?.value) {
+  return currentPage.value === props.totalPages || props.totalPages === 0;
+  // }
+});
 </script>
 
 <style scoped></style>

@@ -45,7 +45,7 @@
       </template>
 
       <template #table>
-        <TableContainer>
+        <TableContainer @page-click="onPageClick">
           <TableHead>
             <TableHeader :headers="headers" @selection="onSelectionHandler" />
           </TableHead>
@@ -56,18 +56,6 @@
               </template>
             </TableRow>
           </tbody>
-
-          <template #pagination>
-            <PaginationContainer
-              :current-page="currentPage"
-              :rows-per-page="recordsPerPage"
-              :total-pages="totalPages"
-              :total-rows="totalRecords"
-              @previous-page="onPreviousPageClick"
-              @next-page="onNextPageClick"
-              @page-number="onPageClick"
-            />
-          </template>
         </TableContainer>
       </template>
     </TableLayout>
@@ -81,7 +69,7 @@ import TableLayout from "../../layouts/TableLayout.vue";
 import TableContainer from "../../components/tables/app-table-components/TableContainer.vue";
 import TableHead from "../../components/tables/app-table-components/TableHead.vue";
 import TableHeader from "../../components/tables/app-table-components/TableHeader.vue";
-import { computed, Ref, ref } from "vue";
+import { computed, provide, Ref, ref } from "vue";
 import TableRow from "../../components/tables/app-table-components/TableRow.vue";
 import { ViewDocumentsObject } from "../../stores/app/documents/interfaces";
 import moment from "moment";
@@ -91,17 +79,18 @@ import SearchMenuItem from "../../components/tables/search-components/SearchMenu
 import ActionsContainer from "../../components/tables/actions-component/ActionsContainer.vue";
 import TableSearchInput from "../../components/tables/TableSearchInput.vue";
 import { useSelectionStore } from "../../stores/tables/selection";
-import PaginationContainer from "../../components/tables/pagination/PaginationContainer.vue";
 import startCase from "lodash/startCase";
 import camelCase from "lodash/camelCase";
-import { useSearchResults } from "../../stores/tables/results";
+import { useSearchResultsStore } from "../../stores/tables/results";
 import { storeToRefs } from "pinia";
+import { ITEMS_PER_PAGE } from "../../stores/tables/const";
+import { currentPageKey } from "../../components/keys";
 
 const routerStore = useRouterStore();
 
 const selectionStore = useSelectionStore();
 
-const searchResultsStore = useSearchResults();
+const searchResultsStore = useSearchResultsStore();
 
 const route = useRoute();
 
@@ -367,39 +356,41 @@ const onSearchKeyClick = (searchKey: string) => {
 
 const currentPage = ref(1);
 
-const recordsPerPage = ref(6);
+// const totalRecords = computed(() => getResults.value.length);
 
-const totalRecords = computed(() => getResults.value.length);
-
-const totalPages = computed(() =>
-  Math.ceil(totalRecords.value / recordsPerPage.value)
-);
+// const totalPages = computed(() =>
+//   Math.ceil(totalRecords.value / recordsPerPage.value)
+// );
 
 // put the records in the current page in a new array
 
+const onPageClick = (page: number) => {
+  currentPage.value = page;
+};
+
 const paginatedRecords = computed(() => {
-  const start = (currentPage.value - 1) * recordsPerPage.value;
-  const end = start + recordsPerPage.value;
+  const start = (currentPage.value - 1) * ITEMS_PER_PAGE;
+  const end = start + ITEMS_PER_PAGE;
   return getResults.value.slice(start, end);
 });
 
-const onPreviousPageClick = () => {
-  if (currentPage.value > 1) {
-    currentPage.value--;
-  }
-};
-
-const onNextPageClick = () => {
-  if (currentPage.value < totalPages.value) {
-    currentPage.value++;
-  }
-};
-
-const onPageClick = (page: number) => {
-  if (page > 0 && page <= totalPages.value) {
-    currentPage.value = page;
-  }
-};
+// const onPreviousPageClick = () => {
+//   if (currentPage.value > 1) {
+//     currentPage.value--;
+//   }
+// };
+//
+// const onNextPageClick = () => {
+//   if (currentPage.value < totalPages.value) {
+//     currentPage.value++;
+//   }
+// };
+//
+// const onPageClick = (page: number) => {
+//   if (page > 0 && page <= totalPages.value) {
+//     currentPage.value = page;
+//   }
+// };
 
 // disable selecting send and delete when no records are selected
 
@@ -458,9 +449,7 @@ const computeSelectItemsMessage = computed(() => {
 });
 
 const computeSelectAllMessage = computed(() => {
-  return selectionStore.getIsAllItemsSelected(getResults.value.length)
-    ? "Unselect all"
-    : "Select all";
+  return selectionStore.getIsAllItemsSelected ? "Unselect all" : "Select all";
 });
 
 const computeSendMessageText = computed(() => {
@@ -513,6 +502,8 @@ const onSelectionHandler = (action: "select-all" | "unselect-all") => {
     selectionStore.deselectAllItems();
   }
 };
+
+provide(currentPageKey, currentPage);
 
 // @ts-ignore - This is a workaround for a bug in Vue Router 4.0.0-beta.13.
 routerStore.setCurrentRoute(route?.name, route.path);
