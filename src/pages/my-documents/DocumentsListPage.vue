@@ -50,7 +50,7 @@
             <TableHeader :headers="headers" @selection="onSelectionHandler" />
           </TableHead>
           <tbody>
-            <TableRow :col-count="headers.length" :records="paginatedRecords">
+            <TableRow :col-count="headers.length" :records="sortedRecords">
               <template #row="{ record }">
                 <TableData :record="record" />
               </template>
@@ -69,7 +69,7 @@ import TableLayout from "../../layouts/TableLayout.vue";
 import TableContainer from "../../components/tables/app-table-components/TableContainer.vue";
 import TableHead from "../../components/tables/app-table-components/TableHead.vue";
 import TableHeader from "../../components/tables/app-table-components/TableHeader.vue";
-import { computed, provide, Ref, ref } from "vue";
+import { computed, provide, Ref, ref, watch } from "vue";
 import TableRow from "../../components/tables/app-table-components/TableRow.vue";
 import { ViewDocumentsObject } from "../../stores/app/documents/interfaces";
 import moment from "moment";
@@ -86,12 +86,18 @@ import { storeToRefs } from "pinia";
 import { ITEMS_PER_PAGE } from "../../stores/tables/const";
 import { currentPageKey } from "../../components/keys";
 import { usePluralize } from "../../composables/pluralize";
+import { useSortArrayStore } from "../../composables/sort-array";
+import { useSortingStore } from "../../stores/tables/sorting";
 
 const routerStore = useRouterStore();
 
 const selectionStore = useSelectionStore();
 
 const searchResultsStore = useSearchResultsStore();
+
+const sortingStore = useSortingStore();
+
+const sortArrayStore = useSortArrayStore();
 
 const route = useRoute();
 
@@ -368,6 +374,24 @@ const paginatedRecords = computed(() => {
   const end = start + ITEMS_PER_PAGE;
   return getResults.value.slice(start, end);
 });
+
+// sort the paginated records
+
+sortArrayStore.setUpArrayStore(paginatedRecords, headers.value[0], "asc");
+
+watch(paginatedRecords, () => {
+  // reset the sort when the paginated records change
+  sortArrayStore.resetSort();
+
+  // reset the sorting store when the paginated records change
+  sortingStore.clearSortItems();
+
+  sortArrayStore.setUpArrayStore(paginatedRecords, headers.value[0], "asc");
+});
+
+const { getSortedArray } = storeToRefs(sortArrayStore);
+
+const sortedRecords = ref(getSortedArray);
 
 // disable selecting send and delete when no records are selected
 

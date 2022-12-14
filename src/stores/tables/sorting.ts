@@ -20,6 +20,8 @@ export const useSortingStore = defineStore("sorting", () => {
       item.active = true;
       item.direction = item.direction === "asc" ? "desc" : "asc";
     } else {
+      // if it doesn't exist, set all items to inactive and add the new item
+      items.value.forEach((item) => (item.active = false));
       items.value.push({ field, active: true, direction: "asc" });
     }
   }

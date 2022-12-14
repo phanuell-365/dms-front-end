@@ -12,22 +12,26 @@
       <label class="sr-only" for="tableRow">checkbox</label>
     </div>
   </th>
-  <th v-for="header in headers" :key="header" class="md:py-3 py-2 px-3">
-    {{ startCase(header) }}
+  <th
+    v-for="header in headers"
+    :key="header"
+    class="md:py-3 py-2 px-3 tracking-wider cursor-pointer"
+  >
+    <SortHeader :header="header" />
   </th>
   <th class="px-3 py-2">Action</th>
 </template>
 
 <script lang="ts" setup>
-import startCase from "lodash/startCase";
 import { computed, ref, Ref } from "vue";
 import { useSelectionStore } from "../../../stores/tables/selection";
+import SortHeader from "../sorting/SortHeader.vue";
 
 interface TableHeaderProps {
   headers: string[];
 }
 
-const props = defineProps<TableHeaderProps>();
+defineProps<TableHeaderProps>();
 
 const emits = defineEmits<{
   (e: "selection", action: "select-all" | "unselect-all"): void;
