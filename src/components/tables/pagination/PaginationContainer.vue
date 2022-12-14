@@ -73,7 +73,7 @@ import {
   ChevronDoubleRightIcon,
 } from "@heroicons/vue/24/outline";
 import { useSelectionStore } from "../../../stores/tables/selection";
-import { currentPageKey } from "../../keys";
+import { currentPageKey } from "../../../keys";
 
 interface PaginationContainerProps {
   totalRows: number;

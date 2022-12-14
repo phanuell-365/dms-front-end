@@ -84,7 +84,7 @@ import camelCase from "lodash/camelCase";
 import { useSearchResultsStore } from "../../stores/tables/results";
 import { storeToRefs } from "pinia";
 import { ITEMS_PER_PAGE } from "../../stores/tables/const";
-import { currentPageKey } from "../../components/keys";
+import { currentPageKey } from "../../keys";
 import { usePluralize } from "../../composables/pluralize";
 import { useSortArrayStore } from "../../composables/sort-array";
 import { useSortingStore } from "../../stores/tables/sorting";

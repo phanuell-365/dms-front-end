@@ -28,7 +28,7 @@ import { useSearchResultsStore } from "../../../stores/tables/results";
 import { storeToRefs } from "pinia";
 import { ITEMS_PER_PAGE } from "../../../stores/tables/const";
 import { computed, inject, Ref } from "vue";
-import { currentPageKey } from "../../keys";
+import { currentPageKey } from "../../../keys";
 import SelectionContainer from "../selection/SelectionContainer.vue";
 
 const currentPage = inject<Ref<number>>(currentPageKey);
