@@ -527,9 +527,16 @@ onBeforeRouteLeave((to, from, next) => {
 
   selectionStore.removeAllItems();
 
-  // selectedSearchKey.value = searchKeys.value[0];
-  //
-  // searchResultsStore.reset();
+  selectedSearchKey.value = searchKeys.value[0];
+
+  searchResultsStore.reset();
+
+  // reset the sorting store
+  sortingStore.clearSortItems();
+
+  // reset the sort array store
+  sortArrayStore.resetSort();
+
   next();
 });
 </script>

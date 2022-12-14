@@ -1,4 +1,4 @@
-import { computed, ref, Ref } from "vue";
+import { computed, ref, Ref, watch } from "vue";
 import { useSortingStore } from "../stores/tables/sorting";
 import { defineStore, storeToRefs } from "pinia";
 
@@ -12,9 +12,17 @@ export const useSortArrayStore = defineStore("sort-array", () => {
 
   const originalArray: Ref<any[]> = ref([]);
 
-  const header = ref(getActiveSortField);
+  const header = ref("");
 
-  const direction = ref(getActiveSortDirection);
+  const direction = ref("");
+
+  watch(getActiveSortDirection, (newDirection) => {
+    direction.value = newDirection;
+  });
+
+  watch(getActiveSortField, (newField) => {
+    header.value = newField;
+  });
 
   function setUpArrayStore(
     arrayToSort: Ref<any[]>,
