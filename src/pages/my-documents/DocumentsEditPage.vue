@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-import DocumentsLayout from "../../layouts/DocumentsLayout.vue";
+import DocumentsLayout from "../../layouts/FormLayout.vue";
 import { useRouterStore } from "../../stores/router";
 import { useRoute } from "vue-router";
 

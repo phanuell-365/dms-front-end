@@ -32,9 +32,31 @@ const router = createRouter({
         },
         {
           path: "create",
-          name: "create-document",
           component: () =>
-            import("../pages/my-documents/DocumentsCreatePage.vue"),
+            import(
+              "../pages/my-documents/create-document/DocumentsCreateRenderPage.vue"
+            ),
+          children: [
+            {
+              path: "",
+              name: "create-document",
+              component: () =>
+                import(
+                  "../pages/my-documents/create-document/DocumentsCreatePage.vue"
+                ),
+            },
+            {
+              path: "files/:id",
+              name: "upload-document-files",
+              component: () =>
+                import(
+                  "../pages/my-documents/create-document/DocumentsUploadFilePage.vue"
+                ),
+              props: (route) => ({
+                fileId: route.params.id,
+              }),
+            },
+          ],
         },
         {
           path: "edit/:id",
