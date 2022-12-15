@@ -116,6 +116,7 @@ export const useFileUploadStore = defineStore("file-upload", () => {
   const getIsUploading = computed(() => isUploading.value);
   const getUploadProgress = computed(() => uploadProgress.value);
   const getUploadError = computed(() => uploadError.value);
+  const getHasFile = computed(() => uploadedFiles.value.length > 0);
 
   return {
     files,
@@ -138,5 +139,6 @@ export const useFileUploadStore = defineStore("file-upload", () => {
     getIsUploading,
     getUploadProgress,
     getUploadError,
+    getHasFile,
   };
 });

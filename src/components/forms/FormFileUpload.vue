@@ -3,11 +3,11 @@
     <!--  create a drag and drop div for file upload  -->
     <div
       ref="dropArea"
-      class="flex flex-col items-center justify-center w-full h-96 border-2 border-dashed border-gray-300 rounded-lg"
+      class="flex flex-col items-center justify-center w-72 h-72 border-2 border-dashed border-gray-300 rounded-lg"
       @drop.prevent="onDrop"
     >
       <div class="flex flex-col items-center justify-center">
-        <ArrowDownIcon class="w-8 h-8 text-gray-400 my-2" />
+        <DocumentPlusIcon class="w-8 h-8 text-gray-400 my-2" />
         <p class="my-1 text-sm text-gray-400">Drag and drop your files here</p>
         <p class="my-1 text-sm text-gray-400">or</p>
         <button
@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ArrowDownIcon } from "@heroicons/vue/24/outline";
+import { DocumentPlusIcon } from "@heroicons/vue/24/outline";
 import { onMounted, onUnmounted, ref } from "vue";
 import { useFileUploadStore } from "../../stores/app/files/file-upload";
 
@@ -44,9 +44,18 @@ const onFileClick = () => {
 };
 
 const onFileChange = (e: Event) => {
-  const files = (e.target as HTMLInputElement).files;
-  if (files) {
-    console.log(files);
+  const dataTransferFiles = (e.target as HTMLInputElement).files;
+
+  const files = [];
+
+  if (dataTransferFiles) {
+    for (let i = 0; i < dataTransferFiles.length; i++) {
+      files.push(dataTransferFiles[i]);
+    }
+  }
+
+  if (files.length > 0) {
+    fileUploadStore.addFiles(files);
   }
 };
 
