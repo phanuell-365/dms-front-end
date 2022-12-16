@@ -3,9 +3,7 @@
     class="md:rounded-lg shadow-lg border md:overflow-hidden overflow-x-auto"
   >
     <SelectionContainer />
-    <table
-      class="w-full table table-auto md:text-sm text-xs text-left text-stone-500"
-    >
+    <table class="w-full md:text-sm text-xs text-left text-stone-500">
       <slot />
     </table>
   </div>

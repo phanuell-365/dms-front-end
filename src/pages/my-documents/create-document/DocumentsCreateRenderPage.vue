@@ -11,7 +11,7 @@
         <div v-if="getHasFile" class="basis-1/12">
           <div class="flex flex-col">
             <span class="text-sm font-bold text-zinc-500 mt-2.5 mb-1">
-              Uploaded Files
+              Files to upload
             </span>
           </div>
         </div>

@@ -15,7 +15,7 @@ import UploadedFileItem from "./UploadedFileItem.vue";
 
 const fileUploadStore = useFileUploadStore();
 
-const uploadedFiles = computed(() => fileUploadStore.uploadedFiles);
+const uploadedFiles = computed(() => fileUploadStore.getSortedUploadedFiles);
 </script>
 
 <style scoped></style>

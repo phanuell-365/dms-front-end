@@ -1,5 +1,8 @@
 <template>
-  <div class="bg-white first:border-t border-b last:mb-2 border-x">
+  <RouterLink
+    :to="href"
+    class="bg-white first:border-t border-b last:mb-2 border-x"
+  >
     <div class="flex flex-row py-1 px-1">
       <div class="basis-1/4 flex items-center justify-center">
         <div class="flex flex-row flex-nowrap items-center justify-start">
@@ -38,7 +41,7 @@
         </button>
       </div>
     </div>
-  </div>
+  </RouterLink>
 </template>
 
 <script lang="ts" setup>
@@ -66,6 +69,10 @@ const fileSize = computed(() => {
     return `${(size / 1024 / 1024 / 1024).toFixed(2)} GB`;
   }
 });
+
+const href = computed(
+  () => `/documents/create/files/${props.uploadedFile.fileId}`
+);
 </script>
 
 <style scoped></style>

@@ -32,8 +32,14 @@
 import { DocumentPlusIcon } from "@heroicons/vue/24/outline";
 import { onMounted, onUnmounted, ref } from "vue";
 import { useFileUploadStore } from "../../stores/app/files/file-upload";
+import { useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
 
 const fileUploadStore = useFileUploadStore();
+
+const { getLastUploadedFile } = storeToRefs(fileUploadStore);
+
+const router = useRouter();
 
 const fileInput = ref<HTMLInputElement | null>(null);
 
@@ -56,6 +62,14 @@ const onFileChange = (e: Event) => {
 
   if (files.length > 0) {
     fileUploadStore.addFiles(files);
+
+    if (getLastUploadedFile.value)
+      router.push({
+        name: "upload-document-files",
+        params: {
+          id: getLastUploadedFile.value.fileId,
+        },
+      });
   }
 };
 
@@ -99,6 +113,14 @@ const onDrop = (e: DragEvent) => {
   if (files.length > 0) {
     //  upload files
     fileUploadStore.addFiles(files);
+
+    if (getLastUploadedFile.value)
+      router.push({
+        name: "upload-document-files",
+        params: {
+          id: getLastUploadedFile.value.fileId,
+        },
+      });
   }
 };
 

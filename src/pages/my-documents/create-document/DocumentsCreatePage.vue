@@ -1,7 +1,12 @@
 <template>
-  <div>
-    No documents selected yet, please and drag and drop your documents to the
-    drop zone to upload them and add them to the document list.
+  <div class="flex items-center justify-center">
+    <div class="text-gray-400 px-9 py-5">
+      <span class="text-4xl font-bold"> No documents selected yet. </span>
+      <span class="text-3xl">
+        Please drag and drop your documents to the drop zone to upload them and
+        add them to the document list.</span
+      >
+    </div>
   </div>
 </template>
 

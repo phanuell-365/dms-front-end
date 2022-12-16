@@ -24,16 +24,20 @@ export class UploadFile {
   }
 
   get name() {
-    if (this.file.name.length > 20) {
+    if (this.file.name.length > 15) {
       // extract the file name without the extension
       const fileName = this.file.name.split(".").slice(0, -1).join(".");
       // extract the file extension
       const fileExtension = this.file.name.split(".").pop();
       // return the file name with the extension
-      return `${fileName.substring(0, 20)}...${fileExtension}`;
+      return `${fileName.substring(0, 15)}...${fileExtension}`;
     } else {
       return this.file.name;
     }
+  }
+
+  get fullName() {
+    return this.file.name;
   }
 
   get size() {
