@@ -3,6 +3,7 @@ import { computed, ref, Ref } from "vue";
 import { UploadFile } from "./upload-file";
 import { VALID_FILE_EXTENSIONS, VALID_FILE_SIZE } from "./const";
 import { DmsError } from "../../../errors/dms-error";
+import { useUploadDocumentsStore } from "../documents/upload-documents";
 
 export const useFileUploadStore = defineStore("file-upload", () => {
   const files: Ref<File[]> = ref([]);
@@ -42,6 +43,8 @@ export const useFileUploadStore = defineStore("file-upload", () => {
   }
 
   function addFiles(newFiles: File[]) {
+    const uploadDocumentStore = useUploadDocumentsStore();
+
     // before adding files, check if their extensions are allowed
     newFiles.forEach((file) => {
       if (!validateFileExtension(file)) {
@@ -56,6 +59,10 @@ export const useFileUploadStore = defineStore("file-upload", () => {
     const newUploadFiles = newFiles.map((file) => {
       const newUploadedFile = new UploadFile(file);
       validateIfFileExists(newUploadedFile);
+
+      // for each uploaded file, create a document state
+      uploadDocumentStore.addDocumentState(newUploadedFile);
+
       return newUploadedFile;
     });
 

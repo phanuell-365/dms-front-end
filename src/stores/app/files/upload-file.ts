@@ -40,6 +40,10 @@ export class UploadFile {
     return this.file.name;
   }
 
+  get fullNameWithoutExtension() {
+    return this.fullName.split(".").slice(0, -1).join(".");
+  }
+
   get size() {
     return this.file.size;
   }
