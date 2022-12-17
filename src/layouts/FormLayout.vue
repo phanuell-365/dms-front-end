@@ -1,5 +1,5 @@
 <template>
-  <form autocomplete="off" novalidate @submit.prevent>
+  <form autocomplete="off" class="bg-white" novalidate @submit.prevent>
     <div
       class="flex md:flex-row flex-col flex-nowrap justify-evenly md:mx-0.5 px-4 md:px-0.5 mx-5"
     >

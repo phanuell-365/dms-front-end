@@ -1,7 +1,7 @@
 <template>
   <h1>
     <span class="text-2xl font-bold">
-      Successfully uploaded the file {{ uploadedFile?.fullName }}.
+      <CreateMetadata :file-id="fileId" />
     </span>
   </h1>
 </template>
@@ -11,6 +11,7 @@ import { ref, watch } from "vue";
 import { useRouterStore } from "../../../stores/router";
 import { useRoute } from "vue-router";
 import { useFileUploadStore } from "../../../stores/app/files/file-upload";
+import CreateMetadata from "../../../components/forms/metadata/CreateMetadata.vue";
 
 interface DocumentsUploadFilePageProps {
   fileId: string;
