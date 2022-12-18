@@ -1,17 +1,20 @@
 <template>
   <label class="inline-block basis-1/2 p-3">
     <span
-      class="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-stone-700 dark:text-stone-50 pb-2"
+      :class="{
+        'after:content-[\'*\'] after:ml-0.5 after:text-red-500': required,
+      }"
+      class="block text-sm font-medium text-stone-700 pb-2"
     >
       {{ startCase(inputName) }}
     </span>
     <input
       :id="inputName"
       :class="{
-        'border-pink-600 dark:border-pink-500 focus:border-pink-600 dark:focus:border-pink-500 focus:ring-pink-600 dark:focus:ring-pink-500 caret-pink-600 text-pink-500':
+        'border-pink-600 focus:border-pink-600 focus:ring-pink-600 caret-pink-600 text-pink-500':
           (!formInputMeta.valid && formInputMeta.validated) ||
           (!formInputMeta.validated && !formIsValid),
-        'border-stone-300 dark:border-stone-50 focus:border-sky-500 dark:focus:border-sky-300 focus:ring-sky-500 dark:focus:ring-sky-200 dark:text-stone-50 caret-sky-200':
+        'border-stone-300 focus:border-sky-500 focus:ring-sky-500 caret-sky-200':
           !(
             (!formInputMeta.valid && formInputMeta.validated) ||
             (!formInputMeta.validated && !formIsValid)
@@ -25,18 +28,20 @@
       type="text"
       @input="$emit('update:modelValue', $event.target.value)"
     />
-    <small
-      v-if="!formInputMeta.valid && formInputMeta.validated"
-      class="mt-2 block text-pink-600 dark:text-pink-500 text-sm"
-    >
-      {{ formInputErrorMessage }}
-    </small>
-    <small
-      v-else-if="!formInputMeta.validated && !formIsValid"
-      class="mt-2 block text-pink-600 dark:text-pink-500 text-sm"
-    >
-      This is a required field
-    </small>
+    <template v-if="required">
+      <small
+        v-if="!formInputMeta.valid && formInputMeta.validated"
+        class="mt-2 block text-pink-600 dark:text-pink-500 text-sm"
+      >
+        {{ formInputErrorMessage }}
+      </small>
+      <small
+        v-else-if="!formInputMeta.validated && !formIsValid"
+        class="mt-2 block text-pink-600 dark:text-pink-500 text-sm"
+      >
+        This is a required field
+      </small>
+    </template>
   </label>
 </template>
 
@@ -50,6 +55,7 @@ interface FormInputProps {
   formIsValid: boolean;
   modelValue: unknown;
   formInputValue: any;
+  required?: boolean;
 
   validateFormInput(value: any): string | boolean;
 }

@@ -1,9 +1,5 @@
 <template>
-  <h1>
-    <span class="text-2xl font-bold">
-      <CreateMetadata :file-id="fileId" />
-    </span>
-  </h1>
+  <CreateMetadata :file-id="fileId" />
 </template>
 
 <script lang="ts" setup>
