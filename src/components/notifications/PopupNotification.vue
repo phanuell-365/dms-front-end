@@ -74,12 +74,14 @@ const props = defineProps<PopupNotificationProps>();
 
 watch(props, (value) => {
   isOpen.value = value.show;
+  if (!value.show) emits("close-notification");
 });
 
 const isOpen = ref(props.show);
 
 const setIsOpen = (value: boolean) => {
   isOpen.value = value;
+  emits("close-notification");
 };
 
 const onMouseEnter = () => {
@@ -94,6 +96,7 @@ const onMouseLeave = () => {
 
 const emits = defineEmits<{
   (e: "hover", state: boolean): void;
+  (e: "close-notification"): void;
 }>();
 </script>
 

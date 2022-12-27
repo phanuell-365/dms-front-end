@@ -1,5 +1,10 @@
 <template>
-  <PopupNotification :show="show" fatal @hover="onHover">
+  <PopupNotification
+    :show="show"
+    fatal
+    @hover="onHover"
+    @close-notification="onCloseNotification"
+  >
     <template #icon>
       <ExclamationTriangleIcon
         class="w-10 h-10 p-2 rounded-full text-red-400 m-1 bg-red-100"
@@ -48,6 +53,10 @@ const onCloseClick = () => {
 
 const onHover = (value: boolean) => {
   emits("hover", value);
+};
+
+const onCloseNotification = () => {
+  emits("close-notification");
 };
 </script>
 

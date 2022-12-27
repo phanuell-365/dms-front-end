@@ -174,7 +174,6 @@ const onDrop = (e: DragEvent) => {
         timeoutId.value = setTimeout(() => {
           if (errorNotification.value) errorNotification.value.show = false;
         }, delay.value);
-        console.error(timeoutId.value);
       }
     }
   }
@@ -182,6 +181,7 @@ const onDrop = (e: DragEvent) => {
 
 const onCloseNotification = () => {
   errorNotification.value.show = false;
+  clearTimeout(timeoutId.value);
 };
 
 const onHover = (value: boolean) => {
