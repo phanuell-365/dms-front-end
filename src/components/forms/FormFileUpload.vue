@@ -29,6 +29,7 @@
       :description="errorNotification.description"
       :show="errorNotification.show"
       :title="errorNotification.title"
+      @close-notification="onCloseNotification"
     />
   </div>
 </template>
@@ -78,15 +79,26 @@ const onFileChange = (e: Event) => {
   }
 
   if (files.length > 0) {
-    fileUploadStore.addFiles(files);
+    try {
+      //  upload files
+      fileUploadStore.addFiles(files);
 
-    if (getLastUploadedFile.value)
-      router.push({
-        name: "upload-document-files",
-        params: {
-          id: getLastUploadedFile.value.fileId,
-        },
-      });
+      if (getLastUploadedFile.value)
+        router.push({
+          name: "upload-document-files",
+          params: {
+            id: getLastUploadedFile.value.fileId,
+          },
+        });
+    } catch (error: any) {
+      if (error instanceof DmsError) {
+        console.error(error);
+        errorNotification.value = useDisplayErrNotification(error).value;
+        setTimeout(() => {
+          if (errorNotification.value) errorNotification.value.show = false;
+        }, delay.value);
+      }
+    }
   }
 };
 
@@ -150,6 +162,10 @@ const onDrop = (e: DragEvent) => {
       }
     }
   }
+};
+
+const onCloseNotification = () => {
+  errorNotification.value.show = false;
 };
 
 onUnmounted(() => {
