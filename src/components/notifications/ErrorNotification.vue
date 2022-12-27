@@ -1,5 +1,5 @@
 <template>
-  <PopupNotification :show="show">
+  <PopupNotification :show="show" fatal @hover="onHover">
     <template #icon>
       <ExclamationTriangleIcon
         class="w-10 h-10 p-2 rounded-full text-red-400 m-1 bg-red-100"
@@ -37,10 +37,17 @@ interface ErrorNotificationProps {
 
 const props = defineProps<ErrorNotificationProps>();
 
-const emits = defineEmits(["close-notification"]);
+const emits = defineEmits<{
+  (e: "close-notification"): void;
+  (e: "hover", state: boolean): void;
+}>();
 
 const onCloseClick = () => {
   emits("close-notification");
+};
+
+const onHover = (value: boolean) => {
+  emits("hover", value);
 };
 </script>
 

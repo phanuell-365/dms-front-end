@@ -29,6 +29,7 @@
       :description="errorNotification.description"
       :show="errorNotification.show"
       :title="errorNotification.title"
+      @hover="onHover"
       @close-notification="onCloseNotification"
     />
   </div>
@@ -36,7 +37,7 @@
 
 <script lang="ts" setup>
 import { DocumentPlusIcon } from "@heroicons/vue/24/outline";
-import { onMounted, onUnmounted, Ref, ref } from "vue";
+import { onMounted, onUnmounted, Ref, ref, watch } from "vue";
 import { useFileUploadStore } from "../../stores/app/files/file-upload";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
@@ -61,7 +62,21 @@ const errorNotification: Ref<PopupNotification> = ref({
   show: false,
 });
 
-const delay = ref(3000);
+const delay = ref(5000);
+
+const hovering = ref(false);
+
+const timeoutId = ref();
+
+watch(hovering, (value) => {
+  if (value) {
+    clearTimeout(timeoutId.value);
+  } else {
+    setTimeout(() => {
+      if (errorNotification.value) errorNotification.value.show = false;
+    }, delay.value);
+  }
+});
 
 const onFileClick = () => {
   fileInput.value?.click();
@@ -94,7 +109,7 @@ const onFileChange = (e: Event) => {
       if (error instanceof DmsError) {
         console.error(error);
         errorNotification.value = useDisplayErrNotification(error).value;
-        setTimeout(() => {
+        timeoutId.value = setTimeout(() => {
           if (errorNotification.value) errorNotification.value.show = false;
         }, delay.value);
       }
@@ -156,9 +171,10 @@ const onDrop = (e: DragEvent) => {
       if (error instanceof DmsError) {
         console.error(error);
         errorNotification.value = useDisplayErrNotification(error).value;
-        setTimeout(() => {
+        timeoutId.value = setTimeout(() => {
           if (errorNotification.value) errorNotification.value.show = false;
         }, delay.value);
+        console.error(timeoutId.value);
       }
     }
   }
@@ -166,6 +182,10 @@ const onDrop = (e: DragEvent) => {
 
 const onCloseNotification = () => {
   errorNotification.value.show = false;
+};
+
+const onHover = (value: boolean) => {
+  hovering.value = value;
 };
 
 onUnmounted(() => {
