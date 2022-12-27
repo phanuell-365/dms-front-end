@@ -25,15 +25,24 @@
         />
       </div>
     </div>
+    <ErrorNotification
+      :description="errorNotification.description"
+      :show="errorNotification.show"
+      :title="errorNotification.title"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { DocumentPlusIcon } from "@heroicons/vue/24/outline";
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, Ref, ref } from "vue";
 import { useFileUploadStore } from "../../stores/app/files/file-upload";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
+import ErrorNotification from "../notifications/ErrorNotification.vue";
+import { PopupNotification } from "../notifications/interface";
+import { DmsError } from "../../errors/dms-error";
+import { useDisplayErrNotification } from "../../composables/disp-err-notif";
 
 const fileUploadStore = useFileUploadStore();
 
@@ -44,6 +53,14 @@ const router = useRouter();
 const fileInput = ref<HTMLInputElement | null>(null);
 
 const dropArea = ref<HTMLElement | null>(null);
+
+const errorNotification: Ref<PopupNotification> = ref({
+  title: "",
+  description: "",
+  show: false,
+});
+
+const delay = ref(3000);
 
 const onFileClick = () => {
   fileInput.value?.click();
@@ -110,17 +127,28 @@ const onDrop = (e: DragEvent) => {
       }
     }
   }
-  if (files.length > 0) {
-    //  upload files
-    fileUploadStore.addFiles(files);
 
-    if (getLastUploadedFile.value)
-      router.push({
-        name: "upload-document-files",
-        params: {
-          id: getLastUploadedFile.value.fileId,
-        },
-      });
+  if (files.length > 0) {
+    try {
+      //  upload files
+      fileUploadStore.addFiles(files);
+
+      if (getLastUploadedFile.value)
+        router.push({
+          name: "upload-document-files",
+          params: {
+            id: getLastUploadedFile.value.fileId,
+          },
+        });
+    } catch (error: any) {
+      if (error instanceof DmsError) {
+        console.error(error);
+        errorNotification.value = useDisplayErrNotification(error).value;
+        setTimeout(() => {
+          if (errorNotification.value) errorNotification.value.show = false;
+        }, delay.value);
+      }
+    }
   }
 };
 
