@@ -26,8 +26,9 @@
       class="peer text-sm block bg-white dark:bg-zinc-600 w-full border rounded-md py-2 px-3 shadow-sm focus:outline-none focus:ring-1 sm:text-sm"
       required
       type="text"
-      @input="$emit('update:modelValue', $event.target.value)"
+      @input="onInputHandler(inputName, formInputMeta.valid, $event)"
     />
+    <!--    @input="$emit('update:modelValue', $event.target.value)"-->
     <template v-if="required">
       <small
         v-if="!formInputMeta.valid && formInputMeta.validated"
@@ -76,7 +77,23 @@ const refFormInputValue = ref(props.formInputValue);
 
 formInput.value = refFormInputValue.value;
 
-defineEmits(["update:modelValue"]);
+const emit = defineEmits<{
+  (e: "update:modelValue", val: any): void;
+  (e: "valid", inputName: string, status: boolean): void;
+}>();
+
+const onInputHandler = (
+  inputName: string,
+  inputMeta: boolean,
+  event: Event
+) => {
+  emit("update:modelValue", (event.target as HTMLInputElement).value);
+  emit("valid", inputName, inputMeta);
+};
+
+// onBeforeUpdate(() => {
+emit("valid", props.inputName, formInputMeta.valid);
+// });
 </script>
 
 <style scoped></style>

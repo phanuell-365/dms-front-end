@@ -8,6 +8,7 @@ import { useRouterStore } from "../../../stores/router";
 import { useRoute } from "vue-router";
 import { useFileUploadStore } from "../../../stores/app/files/file-upload";
 import CreateMetadata from "../../../components/forms/metadata/CreateMetadata.vue";
+import { storeToRefs } from "pinia";
 
 interface DocumentsUploadFilePageProps {
   fileId: string;
@@ -15,20 +16,20 @@ interface DocumentsUploadFilePageProps {
 
 const props = defineProps<DocumentsUploadFilePageProps>();
 
-watch(props, (value) => {
-  fileId.value = value.fileId;
-  uploadedFile.value = fileUploadStore.getUploadedFileById(value.fileId).value;
-});
-
-const fileId = ref(props.fileId);
-
 const routerStore = useRouterStore();
 
 const fileUploadStore = useFileUploadStore();
 
-const uploadedFile = ref(
-  fileUploadStore.getUploadedFileById(fileId.value).value
-);
+const { getUploadedFileById } = storeToRefs(fileUploadStore);
+
+watch(props, (value) => {
+  fileId.value = value.fileId;
+  uploadedFile.value = getUploadedFileById.value(value.fileId);
+});
+
+const fileId = ref(props.fileId);
+
+const uploadedFile = ref(getUploadedFileById.value(fileId.value));
 
 const route = useRoute();
 

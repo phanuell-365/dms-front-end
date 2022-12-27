@@ -139,10 +139,10 @@ export const useFileUploadStore = defineStore("file-upload", () => {
   const getUploadProgress = computed(() => uploadProgress.value);
   const getUploadError = computed(() => uploadError.value);
   const getHasFile = computed(() => uploadedFiles.value.length > 0);
-  const getUploadedFileById = (fileId: string) =>
-    computed(() =>
+  const getUploadedFileById = computed(
+    () => (fileId: string) =>
       uploadedFiles.value.find((value) => value.fileId === fileId)
-    );
+  );
   const getLastUploadedFile = computed(() => uploadedFiles.value.at(-1));
 
   return {

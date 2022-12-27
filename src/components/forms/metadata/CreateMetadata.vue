@@ -11,6 +11,7 @@
         :validate-form-input="titleValidation"
         input-name="title"
         required
+        @valid="onValid"
       />
 
       <FormInput
@@ -20,6 +21,7 @@
         :validate-form-input="creatorValidation"
         input-name="creator"
         required
+        @valid="onValid"
       />
 
       <DisabledFormInput
@@ -58,13 +60,14 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from "vue";
-import { useField } from "vee-validate";
-import { useFileUploadStore } from "../../../stores/app/files/file-upload";
+import { computed, Ref, ref, watch } from "vue";
 import moment from "moment";
 import FormInput from "../inputs/FormInput.vue";
 import FormTextarea from "../inputs/FormTextarea.vue";
 import DisabledFormInput from "../inputs/DisabledFormInput.vue";
+import { DocumentState } from "../../../stores/app/documents/classes/document-state";
+import { useUploadDocumentsStore } from "../../../stores/app/documents/upload-documents";
+import { storeToRefs } from "pinia";
 
 interface CreateFormProps {
   fileId: string;
@@ -72,17 +75,28 @@ interface CreateFormProps {
 
 const props = defineProps<CreateFormProps>();
 
+const uploadDocumentStore = useUploadDocumentsStore();
+
+const {
+  getDocumentStateById,
+  fileId,
+  title,
+  creator,
+  description,
+  keywords,
+  contributors,
+  lastModified,
+} = storeToRefs(uploadDocumentStore);
+
 watch(props, (value) => {
   fileId.value = value.fileId;
-  uploadedFile.value = fileUploadStore.getUploadedFileById(value.fileId).value;
+  currentDocumentState.value = getDocumentStateById.value(fileId.value);
 });
 
-const fileId = ref(props.fileId);
+uploadDocumentStore.setCurrentDocumentState(props.fileId);
 
-const fileUploadStore = useFileUploadStore();
-
-const uploadedFile = ref(
-  fileUploadStore.getUploadedFileById(fileId.value).value
+const currentDocumentState: Ref<DocumentState | undefined> = ref(
+  getDocumentStateById.value(fileId.value)
 );
 
 // create the title field
@@ -95,28 +109,20 @@ const titleValidation = (value: string) => {
   return true;
 };
 
-const {
-  value: title,
-  errorMessage: titleErrorMessage,
-  meta: titleMeta,
-} = useField("title", titleValidation);
+// const title = ref();
+
+const titleIsValid = ref(false);
 
 // create the creator field
 
 const creatorValidation = (value: string) => {
   if (!value) return "This is a required field";
-  if (value.length < 3) {
-    return "Creator must be at least 3 characters";
-  }
 
   return true;
 };
 
-const {
-  value: creator,
-  errorMessage: creatorErrorMessage,
-  meta: creatorMeta,
-} = useField("creator", creatorValidation);
+// const creator = ref();
+const creatorIsValid = ref(false);
 
 // create the description field
 
@@ -129,11 +135,8 @@ const descriptionValidation = (value: string) => {
   return true;
 };
 
-const {
-  value: description,
-  errorMessage: descriptionErrorMessage,
-  meta: descriptionMeta,
-} = useField("description", descriptionValidation);
+// const description = ref();
+const descriptionIsValid = ref(false);
 
 // create the keywords field
 
@@ -148,11 +151,8 @@ const keywordsValidation = (value: string) => {
   return true;
 };
 
-const {
-  value: keywords,
-  errorMessage: keywordsErrorMessage,
-  meta: keywordsMeta,
-} = useField("keywords", keywordsValidation);
+// const keywords = ref();
+const keywordsIsValid = ref(false);
 
 // create the contributors field
 
@@ -167,33 +167,36 @@ const contributorsValidation = (value: string) => {
   return true;
 };
 
-const {
-  value: contributors,
-  errorMessage: contributorsErrorMessage,
-  meta: contributorsMeta,
-} = useField("contributors", contributorsValidation);
+// const contributors = ref();
+const contributorsIsValid = ref(false);
 
-// create the last modified field
+// const lastModified = ref();
 
-const lastModifiedValidation = (value: string) => {
-  if (!value) return "This is a required field";
-  if (value.length < 3) {
-    return "Last Modified must be at least 3 characters";
+// listeners for the form inputs.
+
+const onValid = (inputName: string, inputMeta: boolean) => {
+  switch (inputName) {
+    case "title": {
+      console.error(inputName, inputMeta);
+      titleIsValid.value = inputMeta;
+      break;
+    }
+    case "creator": {
+      console.error(inputName, inputMeta);
+      creatorIsValid.value = inputMeta;
+      break;
+    }
   }
-
-  return true;
 };
 
-const {
-  value: lastModified,
-  errorMessage: lastModifiedErrorMessage,
-  meta: lastModifiedMeta,
-} = useField("lastModified", lastModifiedValidation);
-
 // init fields
-if (uploadedFile.value) {
-  title.value = uploadedFile.value.fullNameWithoutExtension;
-  lastModified.value = moment(uploadedFile.value.lastModified).format(
+if (currentDocumentState.value) {
+  title.value = currentDocumentState.value?.title;
+  creator.value = currentDocumentState.value?.creator;
+  description.value = currentDocumentState.value?.description;
+  keywords.value = currentDocumentState.value?.keywords;
+  contributors.value = currentDocumentState.value?.contributors;
+  lastModified.value = moment(currentDocumentState.value.lastModified).format(
     "MMMM Do YYYY, h:mm:ss a"
   );
 }
@@ -201,12 +204,16 @@ if (uploadedFile.value) {
 // watch for changes on the uploadedFile
 // and update the title and the last modified date fields
 
-watch(uploadedFile, (value) => {
+watch(currentDocumentState, (value) => {
   if (value) {
-    title.value = value.fullNameWithoutExtension;
-    lastModified.value = moment(value.lastModified).format(
-      "MMMM Do YYYY, h:mm:ss a"
-    );
+    // title.value = value.title;
+    // creator.value = <string>currentDocumentState.value?.creator;
+    // description.value = <string>currentDocumentState.value?.description;
+    // keywords.value = <string[]>currentDocumentState.value?.keywords;
+    // contributors.value = <string[]>currentDocumentState.value?.contributors;
+    // lastModified.value = moment(value.lastModified).format(
+    //     "MMMM Do YYYY, h:mm:ss a"
+    // );
   }
 });
 
@@ -214,12 +221,11 @@ const formIsValid = ref(true);
 
 const validateForm = () => {
   formIsValid.value =
-    titleMeta.valid &&
-    creatorMeta.valid &&
-    descriptionMeta.valid &&
-    keywordsMeta.valid &&
-    contributorsMeta.valid &&
-    lastModifiedMeta.valid;
+    titleIsValid.value &&
+    creatorIsValid.value &&
+    descriptionIsValid.value &&
+    keywordsIsValid.value &&
+    contributorsIsValid.value;
 };
 
 // create the formIsInvalid computed property
