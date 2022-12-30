@@ -180,8 +180,8 @@ const onDrop = (e: DragEvent) => {
 };
 
 const onCloseNotification = () => {
-  errorNotification.value.show = false;
   clearTimeout(timeoutId.value);
+  errorNotification.value.show = false;
 };
 
 const onHover = (value: boolean) => {

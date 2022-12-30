@@ -14,15 +14,13 @@
       </TransitionChild>
 
       <TransitionChild
-        enter="duration-100 ease-out"
-        enter-from="opacity-0 translate-x-5"
-        enter-to="opacity-100 scale-100"
-        leave="duration-80 ease-in"
-        leave-from="opacity-100 scale-100"
-        leave-to="opacity-0 scale-95"
+        enter="duration-600 ease-in"
+        enter-from="opacity-0 -translate-x-80"
+        enter-to="opacity-100 translate-x-0"
+        leave="duration-300 ease-out"
+        leave-from="opacity-100 translate-x-0"
+        leave-to="opacity-0 translate-x-80"
       >
-        <!--        <div class="relative">-->
-        <!--        <div class="absolute top-0 right-0 h-16 w-16">-->
         <div class="fixed inset-0 flex items-start justify-end p-1">
           <DialogPanel
             class="w-full max-w-sm md:max-w-md rounded-md shadow-lg bg-white p-3 mt-5 mb-3 mx-3"
@@ -46,7 +44,6 @@
               </div>
             </div>
           </DialogPanel>
-          <!--          </div>-->
         </div>
       </TransitionChild>
     </Dialog>
@@ -85,12 +82,10 @@ const setIsOpen = (value: boolean) => {
 };
 
 const onMouseEnter = () => {
-  console.error("mouseenter");
   emits("hover", true);
 };
 
 const onMouseLeave = () => {
-  console.error("mouseleave");
   emits("hover", false);
 };
 
